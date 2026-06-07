@@ -1,0 +1,2142 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Asia Trip 2027 — Travel Guide</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;0,600;1,300;1,400&family=Libre+Franklin:wght@300;400;500;600&display=swap" rel="stylesheet">
+<style>
+:root {
+  --cream: #faf8f4;
+  --ink: #1a1612;
+  --muted: #6b6560;
+  --border: #e2ddd6;
+  --accent: #8b4513;
+  --accent-light: #c8956a;
+  --tab-bg: #f0ebe3;
+  --active-bg: #fff;
+  --shadow: 0 1px 8px rgba(0,0,0,0.08);
+  --tag-bg: #ede8df;
+}
+* { box-sizing: border-box; margin: 0; padding: 0; }
+body { font-family: 'Libre Franklin', sans-serif; background: var(--cream); color: var(--ink); font-size: 14px; line-height: 1.65; }
+h1, h2, h3, h4 { font-family: 'Cormorant Garamond', serif; }
+
+/* ── SEARCH ── */
+#search-bar { position: sticky; top: 0; z-index: 100; background: var(--ink); padding: 10px 16px; display: flex; align-items: center; gap: 10px; }
+#search-bar input { flex: 1; background: rgba(255,255,255,0.12); border: 1px solid rgba(255,255,255,0.2); border-radius: 6px; padding: 7px 12px; color: #fff; font-family: 'Libre Franklin', sans-serif; font-size: 13px; outline: none; }
+#search-bar input::placeholder { color: rgba(255,255,255,0.45); }
+#search-bar input:focus { border-color: rgba(255,255,255,0.45); background: rgba(255,255,255,0.18); }
+#search-bar label { color: rgba(255,255,255,0.6); font-size: 12px; white-space: nowrap; }
+#clear-search { background: none; border: none; color: rgba(255,255,255,0.5); cursor: pointer; font-size: 18px; line-height: 1; padding: 0 4px; display: none; }
+#clear-search.visible { display: block; }
+
+/* ── DESTINATION NAV ── */
+#dest-nav { display: flex; overflow-x: auto; background: var(--ink); border-bottom: 2px solid var(--accent); scrollbar-width: none; }
+#dest-nav::-webkit-scrollbar { display: none; }
+.dest-btn { flex-shrink: 0; padding: 10px 18px; background: none; border: none; color: rgba(255,255,255,0.55); font-family: 'Libre Franklin', sans-serif; font-size: 12px; font-weight: 500; letter-spacing: 0.06em; text-transform: uppercase; cursor: pointer; border-bottom: 2px solid transparent; margin-bottom: -2px; transition: color 0.2s, border-color 0.2s; white-space: nowrap; }
+.dest-btn:hover { color: rgba(255,255,255,0.85); }
+.dest-btn.active { color: #fff; border-bottom-color: var(--accent-light); }
+
+/* ── SECTION TABS ── */
+#section-tabs { display: flex; flex-wrap: wrap; gap: 6px; padding: 12px 16px; background: var(--tab-bg); border-bottom: 1px solid var(--border); }
+.sec-btn { padding: 5px 12px; background: none; border: 1px solid var(--border); border-radius: 20px; font-family: 'Libre Franklin', sans-serif; font-size: 11.5px; color: var(--muted); cursor: pointer; transition: all 0.15s; }
+.sec-btn:hover { background: #e8e2d8; color: var(--ink); }
+.sec-btn.active { background: var(--ink); color: #fff; border-color: var(--ink); }
+
+/* ── MAIN CONTENT ── */
+#content { padding: 20px 16px 60px; max-width: 780px; margin: 0 auto; }
+.destination-panel { display: none; }
+.destination-panel.active { display: block; }
+.section-panel { display: none; }
+.section-panel.active { display: block; }
+
+/* ── DESTINATION HEADER ── */
+.dest-header { border-bottom: 1px solid var(--border); padding-bottom: 14px; margin-bottom: 20px; }
+.dest-header h2 { font-size: 2.2rem; font-weight: 300; letter-spacing: -0.01em; color: var(--ink); }
+.dest-meta { display: flex; flex-wrap: wrap; gap: 6px 14px; margin-top: 8px; font-size: 12px; color: var(--muted); }
+.dest-meta span::before { content: '·'; margin-right: 5px; color: var(--accent-light); }
+.dest-meta span:first-child::before { display: none; }
+
+/* ── ENTRIES ── */
+.entry { border: 1px solid var(--border); border-radius: 8px; margin-bottom: 10px; overflow: hidden; }
+.entry-header { padding: 12px 14px; display: flex; align-items: flex-start; gap: 10px; cursor: pointer; background: #fff; user-select: none; transition: background 0.12s; }
+.entry-header:hover { background: #fdf9f5; }
+.entry-title { font-family: 'Cormorant Garamond', serif; font-size: 1.2rem; font-weight: 500; flex: 1; line-height: 1.3; }
+.entry-tags { display: flex; flex-wrap: wrap; gap: 4px; margin-top: 4px; }
+.entry-tag { font-size: 10px; padding: 1px 7px; border-radius: 10px; background: var(--tag-bg); color: var(--muted); font-family: 'Libre Franklin', sans-serif; letter-spacing: 0.04em; }
+.entry-toggle { color: var(--muted); font-size: 16px; transition: transform 0.2s; flex-shrink: 0; margin-top: 2px; }
+.entry.open .entry-toggle { transform: rotate(180deg); }
+.entry-body { display: none; padding: 0 14px 14px; background: #fff; border-top: 1px solid var(--border); font-size: 13.5px; line-height: 1.7; }
+.entry.open .entry-body { display: block; }
+.entry-body p { margin-bottom: 8px; }
+.entry-body p:last-child { margin-bottom: 0; }
+.badge { display: inline-flex; align-items: center; gap: 5px; font-size: 11.5px; color: var(--muted); margin: 3px 6px 3px 0; }
+.badge::before { content: '›'; color: var(--accent-light); }
+.maps-link { display: inline-block; margin-top: 6px; font-size: 11.5px; color: var(--accent); text-decoration: none; border-bottom: 1px dashed var(--accent-light); }
+.maps-link:hover { color: var(--ink); }
+.pull-quote { border-left: 3px solid var(--accent-light); padding: 8px 14px; margin: 10px 0; font-style: italic; color: var(--muted); font-family: 'Cormorant Garamond', serif; font-size: 1.05rem; }
+
+/* ── CHECKLIST ── */
+.checklist { list-style: none; }
+.checklist li { display: flex; align-items: flex-start; gap: 10px; padding: 8px 0; border-bottom: 1px solid var(--border); font-size: 13.5px; }
+.checklist li:last-child { border-bottom: none; }
+.checklist input[type=checkbox] { margin-top: 3px; flex-shrink: 0; accent-color: var(--accent); width: 15px; height: 15px; cursor: pointer; }
+.checklist label { cursor: pointer; flex: 1; line-height: 1.55; }
+
+/* ── PHRASE TABLE ── */
+.phrase-table { width: 100%; border-collapse: collapse; font-size: 13px; }
+.phrase-table th { background: var(--tab-bg); text-align: left; padding: 8px 10px; font-weight: 500; font-family: 'Libre Franklin', sans-serif; font-size: 11px; letter-spacing: 0.05em; text-transform: uppercase; color: var(--muted); border-bottom: 1px solid var(--border); }
+.phrase-table td { padding: 8px 10px; border-bottom: 1px solid var(--border); vertical-align: top; }
+.phrase-table tr:last-child td { border-bottom: none; }
+.phrase-table tr:nth-child(even) td { background: #faf8f4; }
+.phrase-note { font-size: 13px; color: var(--muted); margin-top: 12px; line-height: 1.6; }
+.phrase-note li { margin-bottom: 5px; padding-left: 10px; list-style: disc; margin-left: 14px; }
+
+/* ── SEARCH HIGHLIGHTS ── */
+.search-hidden { display: none !important; }
+mark { background: #ffe08a; border-radius: 2px; padding: 0 1px; }
+
+/* ── HOME / CALENDAR SVG PANEL ── */
+.home-panel { padding: 0; }
+.home-intro { padding: 20px 0 16px; }
+.home-intro h2 { font-size: 2rem; font-weight: 300; color: var(--ink); }
+.home-intro p { font-size: 13.5px; color: var(--muted); margin-top: 6px; }
+.calendar-wrap { overflow-x: auto; -webkit-overflow-scrolling: touch; }
+.calendar-wrap svg { display: block; min-width: 700px; }
+
+/* ── SOURCE LINKS ── */
+.source-link { color: var(--accent); text-decoration: none; border-bottom: 1px dashed var(--accent-light); font-size: 13px; }
+.source-link:hover { color: var(--ink); }
+.sources-list { list-style: none; padding: 0; }
+.sources-list li { padding: 5px 0; border-bottom: 1px solid var(--border); }
+.sources-list li:last-child { border-bottom: none; }
+
+/* ── NO RESULTS ── */
+#no-results { display: none; text-align: center; padding: 60px 20px; color: var(--muted); }
+#no-results h3 { font-family: 'Cormorant Garamond', serif; font-size: 1.6rem; font-weight: 300; }
+</style>
+</head>
+<body>
+
+<div id="search-bar">
+  <label>🔍</label>
+  <input type="text" id="search-input" placeholder="Search the guide…" oninput="handleSearch(this.value)">
+  <button id="clear-search" onclick="clearSearch()">✕</button>
+</div>
+
+<div id="dest-nav">
+  <button class="dest-btn active" data-dest="home" onclick="showDest('home', this)">Home</button>
+  <button class="dest-btn" data-dest="pretrip" onclick="showDest('pretrip', this)">Pre-Trip</button>
+  <button class="dest-btn" data-dest="taipei" onclick="showDest('taipei', this)">Taipei</button>
+  <button class="dest-btn" data-dest="hcmc" onclick="showDest('hcmc', this)">Ho Chi Minh City</button>
+  <button class="dest-btn" data-dest="mekong" onclick="showDest('mekong', this)">Mekong Delta</button>
+  <button class="dest-btn" data-dest="hanoi" onclick="showDest('hanoi', this)">Hanoi</button>
+  <button class="dest-btn" data-dest="puluong" onclick="showDest('puluong', this)">Pù Luông</button>
+  <button class="dest-btn" data-dest="singapore" onclick="showDest('singapore', this)">Singapore</button>
+</div>
+
+<div id="section-tabs"></div>
+<div id="content">
+<div id="no-results"><h3>No results found</h3><p>Try a different search term.</p></div>
+<!-- ═══════════════════ HOME PANEL ═══════════════════ -->
+<div class="destination-panel active" id="panel-home">
+<div class="home-panel">
+  <div class="home-intro">
+    <h2>Asia Trip 2027</h2>
+    <p>Feb 14 – Mar 9 &nbsp;·&nbsp; Toronto → Taipei → Ho Chi Minh City → Mekong Delta → Hanoi → Pù Luông → Singapore → Toronto</p>
+  </div>
+  <div class="calendar-wrap">
+<svg viewBox="0 0 980 560" xmlns="http://www.w3.org/2000/svg" font-family="'Libre Franklin', sans-serif">
+
+<!-- Background -->
+<rect width="980" height="560" fill="#faf8f4"/>
+
+<!-- Legend bar -->
+<rect x="20" y="14" width="940" height="32" rx="6" fill="#1a1612"/>
+<text x="36" y="33" font-size="11" fill="rgba(255,255,255,0.9)" font-weight="500">✈ Flying</text>
+<text x="110" y="33" font-size="11" fill="rgba(255,255,255,0.9)">🚴 Cycling</text>
+<text x="185" y="33" font-size="11" fill="rgba(255,255,255,0.9)">🥾 Trekking</text>
+<text x="268" y="33" font-size="11" fill="rgba(255,255,255,0.9)">🛶 Boat</text>
+<text x="328" y="33" font-size="11" fill="rgba(255,255,255,0.9)">🚗 Car / Transfer</text>
+<text x="450" y="33" font-size="11" fill="rgba(255,255,255,0.55)" font-style="italic">Click any day to jump to that destination in the guide</text>
+
+<!-- Day-of-week headers -->
+<rect x="20" y="50" width="940" height="22" rx="0" fill="#e8e2d8"/>
+<g font-size="11" font-weight="600" fill="#6b6560" text-anchor="middle" letter-spacing="0.08em">
+  <text x="86"  y="64">SUN</text>
+  <text x="220" y="64">MON</text>
+  <text x="354" y="64">TUE</text>
+  <text x="488" y="64">WED</text>
+  <text x="622" y="64">THU</text>
+  <text x="756" y="64">FRI</text>
+  <text x="890" y="64">SAT</text>
+</g>
+
+<!-- ── ROW 1: Feb 14–20 ── -->
+<!-- Feb 14 SUN - flight day -->
+<a href="#" onclick="showDest('taipei',document.querySelector('[data-dest=taipei]'));return false;">
+<rect x="20"  y="76" width="132" height="95" rx="4" fill="#1a1612" stroke="#1a1612" stroke-width="1"/>
+<text x="32"  y="93"  font-size="10.5" fill="rgba(255,255,255,0.55)">Feb 14</text>
+<text x="32"  y="108" font-size="13" fill="#fff">✈ YYZ → TPE</text>
+<text x="32"  y="122" font-size="10.5" fill="rgba(255,255,255,0.7)">Toronto → Taipei</text>
+<text x="32"  y="135" font-size="10" fill="rgba(255,255,255,0.5)">AC midnight · on plane</text>
+<text x="32"  y="158" font-size="9.5" fill="#c8956a">→ Taipei</text>
+</a>
+
+<!-- Feb 15 MON - Taipei arr -->
+<a href="#" onclick="showDest('taipei',document.querySelector('[data-dest=taipei]'));return false;">
+<rect x="154" y="76" width="132" height="95" rx="4" fill="#fff" stroke="#e2ddd6" stroke-width="1"/>
+<text x="166" y="93"  font-size="10.5" fill="#6b6560">Feb 15</text>
+<text x="166" y="108" font-size="13" fill="#1a1612" font-weight="500">Taipei</text>
+<text x="166" y="122" font-size="10.5" fill="#6b6560">Arr: 5:00 am</text>
+<text x="166" y="136" font-size="10" fill="#8b4513">citizenM North Gate</text>
+<text x="166" y="158" font-size="9.5" fill="#c8956a">→ Taipei</text>
+</a>
+
+<!-- Feb 16 TUE - Taipei -->
+<a href="#" onclick="showDest('taipei',document.querySelector('[data-dest=taipei]'));return false;">
+<rect x="288" y="76" width="132" height="95" rx="4" fill="#fff" stroke="#e2ddd6" stroke-width="1"/>
+<text x="300" y="93"  font-size="10.5" fill="#6b6560">Feb 16</text>
+<text x="300" y="108" font-size="13" fill="#1a1612" font-weight="500">Taipei</text>
+<text x="300" y="122" font-size="10" fill="#8b4513">citizenM North Gate</text>
+<text x="300" y="158" font-size="9.5" fill="#c8956a">→ Taipei</text>
+</a>
+
+<!-- Feb 17 WED - flight HCMC -->
+<a href="#" onclick="showDest('hcmc',document.querySelector('[data-dest=hcmc]'));return false;">
+<rect x="422" y="76" width="132" height="95" rx="4" fill="#1a1612" stroke="#1a1612" stroke-width="1"/>
+<text x="434" y="93"  font-size="10.5" fill="rgba(255,255,255,0.55)">Feb 17</text>
+<text x="434" y="108" font-size="13" fill="#fff">✈ TPE → HCMC</text>
+<text x="434" y="122" font-size="10.5" fill="rgba(255,255,255,0.7)">EVA 9:10–11:35am</text>
+<text x="434" y="136" font-size="10" fill="rgba(255,255,255,0.5)">Hotel TBD, HCMC</text>
+<text x="434" y="158" font-size="9.5" fill="#c8956a">→ HCMC</text>
+</a>
+
+<!-- Feb 18 THU - HCMC -->
+<a href="#" onclick="showDest('hcmc',document.querySelector('[data-dest=hcmc]'));return false;">
+<rect x="556" y="76" width="132" height="95" rx="4" fill="#fff" stroke="#e2ddd6" stroke-width="1"/>
+<text x="568" y="93"  font-size="10.5" fill="#6b6560">Feb 18</text>
+<text x="568" y="108" font-size="13" fill="#1a1612" font-weight="500">Ho Chi Minh City</text>
+<text x="568" y="122" font-size="10" fill="#8b4513">Hotel TBD</text>
+<text x="568" y="158" font-size="9.5" fill="#c8956a">→ HCMC</text>
+</a>
+
+<!-- Feb 19 FRI - Bike Day 1 -->
+<a href="#" onclick="showDest('mekong',document.querySelector('[data-dest=mekong]'));return false;">
+<rect x="690" y="76" width="132" height="95" rx="4" fill="#2d4a1e" stroke="#2d4a1e" stroke-width="1"/>
+<text x="702" y="93"  font-size="10.5" fill="rgba(255,255,255,0.55)">Feb 19</text>
+<text x="702" y="108" font-size="12" fill="#fff">🚗 🚴 Bike Day 1</text>
+<text x="702" y="122" font-size="10.5" fill="rgba(255,255,255,0.75)">48km: HCMC→Cho Gao</text>
+<text x="702" y="136" font-size="10" fill="rgba(255,255,255,0.55)">Ut Trinh Homestay</text>
+<text x="702" y="158" font-size="9.5" fill="#c8956a">→ Mekong</text>
+</a>
+
+<!-- Feb 20 SAT - Bike Day 2 -->
+<a href="#" onclick="showDest('mekong',document.querySelector('[data-dest=mekong]'));return false;">
+<rect x="824" y="76" width="136" height="95" rx="4" fill="#2d4a1e" stroke="#2d4a1e" stroke-width="1"/>
+<text x="836" y="93"  font-size="10.5" fill="rgba(255,255,255,0.55)">Feb 20</text>
+<text x="836" y="108" font-size="12" fill="#fff">🚴 Bike Day 2</text>
+<text x="836" y="122" font-size="10.5" fill="rgba(255,255,255,0.75)">45km: → Ben Tre</text>
+<text x="836" y="136" font-size="10" fill="rgba(255,255,255,0.55)">Maison du Pays</text>
+<text x="836" y="158" font-size="9.5" fill="#c8956a">→ Mekong</text>
+</a>
+
+<!-- ── ROW 2: Feb 21–27 ── -->
+<!-- Feb 21 SUN - Bike Day 3 -->
+<a href="#" onclick="showDest('mekong',document.querySelector('[data-dest=mekong]'));return false;">
+<rect x="20"  y="177" width="132" height="95" rx="4" fill="#2d4a1e" stroke="#2d4a1e" stroke-width="1"/>
+<text x="32"  y="194" font-size="10.5" fill="rgba(255,255,255,0.55)">Feb 21</text>
+<text x="32"  y="209" font-size="12" fill="#fff">🚴 Bike Day 3</text>
+<text x="32"  y="223" font-size="10.5" fill="rgba(255,255,255,0.75)">42km: → Trà Vinh</text>
+<text x="32"  y="237" font-size="10" fill="rgba(255,255,255,0.55)">Trà Vinh Guesthouse</text>
+<text x="32"  y="259" font-size="9.5" fill="#c8956a">→ Mekong</text>
+</a>
+
+<!-- Feb 22 MON - Bike Day 4 -->
+<a href="#" onclick="showDest('mekong',document.querySelector('[data-dest=mekong]'));return false;">
+<rect x="154" y="177" width="132" height="95" rx="4" fill="#2d4a1e" stroke="#2d4a1e" stroke-width="1"/>
+<text x="166" y="194" font-size="10.5" fill="rgba(255,255,255,0.55)">Feb 22</text>
+<text x="166" y="209" font-size="12" fill="#fff">🚴 Bike Day 4</text>
+<text x="166" y="223" font-size="10.5" fill="rgba(255,255,255,0.75)">59km: → Cầu Kè</text>
+<text x="166" y="237" font-size="10" fill="rgba(255,255,255,0.55)">Suonsia Homestay</text>
+<text x="166" y="259" font-size="9.5" fill="#c8956a">→ Mekong</text>
+</a>
+
+<!-- Feb 23 TUE - Bike Day 5 -->
+<a href="#" onclick="showDest('mekong',document.querySelector('[data-dest=mekong]'));return false;">
+<rect x="288" y="177" width="132" height="95" rx="4" fill="#2d4a1e" stroke="#2d4a1e" stroke-width="1"/>
+<text x="300" y="194" font-size="10.5" fill="rgba(255,255,255,0.55)">Feb 23</text>
+<text x="300" y="209" font-size="12" fill="#fff">🚴 Bike Day 5</text>
+<text x="300" y="223" font-size="10.5" fill="rgba(255,255,255,0.75)">56km: → Cần Thơ</text>
+<text x="300" y="237" font-size="10" fill="rgba(255,255,255,0.55)">Ninh Kieu Riverside</text>
+<text x="300" y="259" font-size="9.5" fill="#c8956a">→ Mekong</text>
+</a>
+
+<!-- Feb 24 WED - Can Tho boat -->
+<a href="#" onclick="showDest('mekong',document.querySelector('[data-dest=mekong]'));return false;">
+<rect x="422" y="177" width="132" height="95" rx="4" fill="#1a3a5c" stroke="#1a3a5c" stroke-width="1"/>
+<text x="434" y="194" font-size="10.5" fill="rgba(255,255,255,0.55)">Feb 24</text>
+<text x="434" y="209" font-size="12" fill="#fff">🛶 Cần Thơ</text>
+<text x="434" y="223" font-size="10.5" fill="rgba(255,255,255,0.75)">Cai Rang Float. Mkt</text>
+<text x="434" y="237" font-size="10" fill="rgba(255,255,255,0.55)">Ninh Kieu Riverside</text>
+<text x="434" y="259" font-size="9.5" fill="#c8956a">→ Mekong</text>
+</a>
+
+<!-- Feb 25 THU - flight Hanoi -->
+<a href="#" onclick="showDest('hanoi',document.querySelector('[data-dest=hanoi]'));return false;">
+<rect x="556" y="177" width="132" height="95" rx="4" fill="#1a1612" stroke="#1a1612" stroke-width="1"/>
+<text x="568" y="194" font-size="10.5" fill="rgba(255,255,255,0.55)">Feb 25</text>
+<text x="568" y="209" font-size="13" fill="#fff">✈ CTO → HAN</text>
+<text x="568" y="223" font-size="10.5" fill="rgba(255,255,255,0.7)">Cần Thơ → Hanoi</text>
+<text x="568" y="237" font-size="10" fill="rgba(255,255,255,0.5)">Vietjet · Hotel TBD</text>
+<text x="568" y="259" font-size="9.5" fill="#c8956a">→ Hanoi</text>
+</a>
+
+<!-- Feb 26 FRI - Hanoi -->
+<a href="#" onclick="showDest('hanoi',document.querySelector('[data-dest=hanoi]'));return false;">
+<rect x="690" y="177" width="132" height="95" rx="4" fill="#fff" stroke="#e2ddd6" stroke-width="1"/>
+<text x="702" y="194" font-size="10.5" fill="#6b6560">Feb 26</text>
+<text x="702" y="209" font-size="13" fill="#1a1612" font-weight="500">Hanoi</text>
+<text x="702" y="223" font-size="10" fill="#8b4513">Hotel TBD</text>
+<text x="702" y="259" font-size="9.5" fill="#c8956a">→ Hanoi</text>
+</a>
+
+<!-- Feb 27 SAT - Hanoi -->
+<a href="#" onclick="showDest('hanoi',document.querySelector('[data-dest=hanoi]'));return false;">
+<rect x="824" y="177" width="136" height="95" rx="4" fill="#fff" stroke="#e2ddd6" stroke-width="1"/>
+<text x="836" y="194" font-size="10.5" fill="#6b6560">Feb 27</text>
+<text x="836" y="209" font-size="13" fill="#1a1612" font-weight="500">Hanoi</text>
+<text x="836" y="223" font-size="10" fill="#8b4513">Hotel TBD</text>
+<text x="836" y="259" font-size="9.5" fill="#c8956a">→ Hanoi</text>
+</a>
+
+<!-- ── ROW 3: Feb 28 – Mar 6 ── -->
+<!-- Feb 28 SUN - Hanoi -->
+<a href="#" onclick="showDest('hanoi',document.querySelector('[data-dest=hanoi]'));return false;">
+<rect x="20"  y="278" width="132" height="95" rx="4" fill="#fff" stroke="#e2ddd6" stroke-width="1"/>
+<text x="32"  y="295" font-size="10.5" fill="#6b6560">Feb 28</text>
+<text x="32"  y="310" font-size="13" fill="#1a1612" font-weight="500">Hanoi</text>
+<text x="32"  y="324" font-size="10" fill="#8b4513">Hotel TBD</text>
+<text x="32"  y="360" font-size="9.5" fill="#c8956a">→ Hanoi</text>
+</a>
+
+<!-- Mar 1 MON - Hanoi → Pù Luông -->
+<a href="#" onclick="showDest('puluong',document.querySelector('[data-dest=puluong]'));return false;">
+<rect x="154" y="278" width="132" height="95" rx="4" fill="#5c3d1a" stroke="#5c3d1a" stroke-width="1"/>
+<text x="166" y="295" font-size="10.5" fill="rgba(255,255,255,0.55)">Mar 1</text>
+<text x="166" y="310" font-size="12" fill="#fff">🚗 Hanoi → Pù Luông</text>
+<text x="166" y="324" font-size="10" fill="rgba(255,255,255,0.65)">4hr afternoon drive</text>
+<text x="166" y="338" font-size="10" fill="rgba(255,255,255,0.5)">Lodging TBD</text>
+<text x="166" y="360" font-size="9.5" fill="#c8956a">→ Pù Luông</text>
+</a>
+
+<!-- Mar 2 TUE - Pù Luông Day 1 -->
+<a href="#" onclick="showDest('puluong',document.querySelector('[data-dest=puluong]'));return false;">
+<rect x="288" y="278" width="132" height="95" rx="4" fill="#5c3d1a" stroke="#5c3d1a" stroke-width="1"/>
+<text x="300" y="295" font-size="10.5" fill="rgba(255,255,255,0.55)">Mar 2</text>
+<text x="300" y="310" font-size="12" fill="#fff">🥾 Pù Luông</text>
+<text x="300" y="324" font-size="10.5" fill="rgba(255,255,255,0.75)">Walking tour · Day 1</text>
+<text x="300" y="338" font-size="10" fill="rgba(255,255,255,0.5)">Lodging TBD</text>
+<text x="300" y="360" font-size="9.5" fill="#c8956a">→ Pù Luông</text>
+</a>
+
+<!-- Mar 3 WED - Pù Luông Day 2 -->
+<a href="#" onclick="showDest('puluong',document.querySelector('[data-dest=puluong]'));return false;">
+<rect x="422" y="278" width="132" height="95" rx="4" fill="#5c3d1a" stroke="#5c3d1a" stroke-width="1"/>
+<text x="434" y="295" font-size="10.5" fill="rgba(255,255,255,0.55)">Mar 3</text>
+<text x="434" y="310" font-size="12" fill="#fff">🥾 Pù Luông</text>
+<text x="434" y="324" font-size="10.5" fill="rgba(255,255,255,0.75)">Walking tour · Day 2</text>
+<text x="434" y="338" font-size="10" fill="rgba(255,255,255,0.5)">Lodging TBD</text>
+<text x="434" y="360" font-size="9.5" fill="#c8956a">→ Pù Luông</text>
+</a>
+
+<!-- Mar 4 THU - Pù Luông Day 3 -->
+<a href="#" onclick="showDest('puluong',document.querySelector('[data-dest=puluong]'));return false;">
+<rect x="556" y="278" width="132" height="95" rx="4" fill="#5c3d1a" stroke="#5c3d1a" stroke-width="1"/>
+<text x="568" y="295" font-size="10.5" fill="rgba(255,255,255,0.55)">Mar 4</text>
+<text x="568" y="310" font-size="12" fill="#fff">🥾 Pù Luông</text>
+<text x="568" y="324" font-size="10.5" fill="rgba(255,255,255,0.75)">Walking tour · Day 3</text>
+<text x="568" y="338" font-size="10" fill="rgba(255,255,255,0.5)">Lodging TBD</text>
+<text x="568" y="360" font-size="9.5" fill="#c8956a">→ Pù Luông</text>
+</a>
+
+<!-- Mar 5 FRI - Pù Luông Day 4 + drive back -->
+<a href="#" onclick="showDest('puluong',document.querySelector('[data-dest=puluong]'));return false;">
+<rect x="690" y="278" width="132" height="95" rx="4" fill="#5c3d1a" stroke="#5c3d1a" stroke-width="1"/>
+<text x="702" y="295" font-size="10.5" fill="rgba(255,255,255,0.55)">Mar 5</text>
+<text x="702" y="310" font-size="12" fill="#fff">🥾 🚗 Pù Luông</text>
+<text x="702" y="324" font-size="10.5" fill="rgba(255,255,255,0.75)">Day 4 · Drive to Hanoi</text>
+<text x="702" y="338" font-size="10" fill="rgba(255,255,255,0.5)">Hotel TBD, Hanoi</text>
+<text x="702" y="360" font-size="9.5" fill="#c8956a">→ Pù Luông</text>
+</a>
+
+<!-- Mar 6 SAT - flight Singapore -->
+<a href="#" onclick="showDest('singapore',document.querySelector('[data-dest=singapore]'));return false;">
+<rect x="824" y="278" width="136" height="95" rx="4" fill="#1a1612" stroke="#1a1612" stroke-width="1"/>
+<text x="836" y="295" font-size="10.5" fill="rgba(255,255,255,0.55)">Mar 6</text>
+<text x="836" y="310" font-size="13" fill="#fff">✈ HAN → SIN</text>
+<text x="836" y="324" font-size="10.5" fill="rgba(255,255,255,0.7)">SQ 12:45–5:20pm</text>
+<text x="836" y="338" font-size="10" fill="rgba(255,255,255,0.5)">Hotel TBD, Singapore</text>
+<text x="836" y="360" font-size="9.5" fill="#c8956a">→ Singapore</text>
+</a>
+
+<!-- ── ROW 4: Mar 7–9 ── -->
+<!-- Mar 7 SUN - Singapore -->
+<a href="#" onclick="showDest('singapore',document.querySelector('[data-dest=singapore]'));return false;">
+<rect x="20"  y="379" width="132" height="95" rx="4" fill="#fff" stroke="#e2ddd6" stroke-width="1"/>
+<text x="32"  y="396" font-size="10.5" fill="#6b6560">Mar 7</text>
+<text x="32"  y="411" font-size="13" fill="#1a1612" font-weight="500">🧭 Singapore</text>
+<text x="32"  y="425" font-size="10" fill="#8b4513">Hotel TBD</text>
+<text x="32"  y="461" font-size="9.5" fill="#c8956a">→ Singapore</text>
+</a>
+
+<!-- Mar 8 MON - Singapore -->
+<a href="#" onclick="showDest('singapore',document.querySelector('[data-dest=singapore]'));return false;">
+<rect x="154" y="379" width="132" height="95" rx="4" fill="#fff" stroke="#e2ddd6" stroke-width="1"/>
+<text x="166" y="396" font-size="10.5" fill="#6b6560">Mar 8</text>
+<text x="166" y="411" font-size="13" fill="#1a1612" font-weight="500">🧭 Singapore</text>
+<text x="166" y="425" font-size="10" fill="#8b4513">Hotel TBD</text>
+<text x="166" y="461" font-size="9.5" fill="#c8956a">→ Singapore</text>
+</a>
+
+<!-- Mar 9 TUE - fly home -->
+<a href="#" onclick="return false;">
+<rect x="288" y="379" width="132" height="95" rx="4" fill="#1a1612" stroke="#1a1612" stroke-width="1"/>
+<text x="300" y="396" font-size="10.5" fill="rgba(255,255,255,0.55)">Mar 9</text>
+<text x="300" y="411" font-size="13" fill="#fff">✈ SIN → YYZ</text>
+<text x="300" y="425" font-size="10.5" fill="rgba(255,255,255,0.7)">Fly Home</text>
+<text x="300" y="439" font-size="10" fill="rgba(255,255,255,0.45)">On plane → Toronto</text>
+</a>
+
+<!-- Empty cells -->
+<rect x="422" y="379" width="132" height="95" rx="4" fill="#f5f2ee" stroke="#e2ddd6" stroke-width="1"/>
+<rect x="556" y="379" width="132" height="95" rx="4" fill="#f5f2ee" stroke="#e2ddd6" stroke-width="1"/>
+<rect x="690" y="379" width="132" height="95" rx="4" fill="#f5f2ee" stroke="#e2ddd6" stroke-width="1"/>
+<rect x="824" y="379" width="136" height="95" rx="4" fill="#f5f2ee" stroke="#e2ddd6" stroke-width="1"/>
+
+<!-- Colour key -->
+<text x="20" y="500" font-size="11" fill="#6b6560" font-weight="500">Key:</text>
+<rect x="50" y="489" width="14" height="14" rx="2" fill="#1a1612"/>
+<text x="68" y="500" font-size="11" fill="#6b6560">Flight / travel day</text>
+<rect x="200" y="489" width="14" height="14" rx="2" fill="#2d4a1e"/>
+<text x="218" y="500" font-size="11" fill="#6b6560">Cycling (Mekong)</text>
+<rect x="360" y="489" width="14" height="14" rx="2" fill="#1a3a5c"/>
+<text x="378" y="500" font-size="11" fill="#6b6560">Boat day</text>
+<rect x="470" y="489" width="14" height="14" rx="2" fill="#5c3d1a"/>
+<text x="488" y="500" font-size="11" fill="#6b6560">Trekking (Pù Luông)</text>
+<rect x="650" y="489" width="14" height="14" rx="2" fill="#fff" stroke="#e2ddd6" stroke-width="1"/>
+<text x="668" y="500" font-size="11" fill="#6b6560">City day</text>
+
+<text x="20" y="530" font-size="10.5" fill="#c8956a">Mr. Biker Saigon cycling tour · Feb 19–23 · 250km Mekong Delta</text>
+<text x="20" y="545" font-size="10.5" fill="#6b6560">Departing Toronto: Feb 14 at midnight &nbsp;·&nbsp; Returning: Mar 9 (arrives Mar 10)</text>
+
+</svg>
+  </div><!-- calendar-wrap -->
+</div><!-- home-panel -->
+</div><!-- panel-home -->
+
+<!-- ═══════════════════ PRE-TRIP PANEL ═══════════════════ -->
+<div class="destination-panel" id="panel-pretrip">
+<div class="dest-header">
+  <h2>Pre-Trip Checklist</h2>
+  <div class="dest-meta"><span>Taiwan · Vietnam · Singapore</span><span>Feb 14 – Mar 9, 2027</span></div>
+</div>
+
+<div class="section-panel active" id="pretrip-visas">
+<h3 style="font-size:1.05rem;color:var(--muted);letter-spacing:0.06em;text-transform:uppercase;font-family:'Libre Franklin',sans-serif;font-weight:500;margin-bottom:12px;">Visas &amp; Entry</h3>
+<ul class="checklist">
+  <li><input type="checkbox" id="c1"><label for="c1"><strong>Get Vietnam e-visa</strong> — Required for Canadians. Apply at the official government portal: <a href="https://evisa.xuatnhapcanh.gov.vn" class="source-link">evisa.xuatnhapcanh.gov.vn</a>. $25 USD single entry / $50 USD multiple entry. Processing 3–7 working days — apply at least 2 weeks out. Need: passport scan, passport photo, travel dates.</label></li>
+  <li><input type="checkbox" id="c2"><label for="c2"><strong>Taiwan Arrival Card (TWAC)</strong> — No visa needed (Canadians get 90 days visa-free), but Taiwan requires a digital arrival card completed within 72 hours before arrival. Free. Official site: <a href="https://arrival.immigration.gov.tw" class="source-link">arrival.immigration.gov.tw</a></label></li>
+  <li><input type="checkbox" id="c3"><label for="c3"><strong>Singapore Digital Arrival Card (SGAC)</strong> — No visa needed (Canadians visa-free up to 90 days), but Singapore requires a digital arrival card completed within 3 days before arrival. Free. Official site: <a href="https://eservices.ica.gov.sg/sgarrivalcard" class="source-link">eservices.ica.gov.sg</a></label></li>
+</ul>
+</div>
+
+<div class="section-panel" id="pretrip-apps">
+<h3 style="font-size:1.05rem;color:var(--muted);letter-spacing:0.06em;text-transform:uppercase;font-family:'Libre Franklin',sans-serif;font-weight:500;margin-bottom:12px;">Apps</h3>
+<ul class="checklist">
+  <li><input type="checkbox" id="c4"><label for="c4"><strong>Download Grab</strong> — Essential for Vietnam and Singapore. Set up payment before leaving Canada. Used for every taxi/motorbike ride across HCMC, Can Tho, Hanoi, and Singapore. <a href="https://www.grab.com/ca/download" class="source-link">grab.com/ca</a></label></li>
+  <li><input type="checkbox" id="c5"><label for="c5"><strong>Download Google Maps offline</strong> — Download offline maps for HCMC, Can Tho, Hanoi, and Singapore before departure. Saves data and works when signal is poor.</label></li>
+  <li><input type="checkbox" id="c6"><label for="c6"><strong>Set up Google Translate offline</strong> — Download Vietnamese language pack for offline use. Invaluable in rural Mekong Delta and Pù Luông.</label></li>
+</ul>
+</div>
+
+<div class="section-panel" id="pretrip-money">
+<h3 style="font-size:1.05rem;color:var(--muted);letter-spacing:0.06em;text-transform:uppercase;font-family:'Libre Franklin',sans-serif;font-weight:500;margin-bottom:12px;">Money</h3>
+<ul class="checklist">
+  <li><input type="checkbox" id="c7"><label for="c7"><strong>Notify bank and credit card of travel dates and countries</strong> — Taiwan, Vietnam, Singapore. Prevents fraud blocks at the worst possible moment.</label></li>
+  <li><input type="checkbox" id="c8"><label for="c8"><strong>Get some Vietnamese Dong before the Mekong Delta leg</strong> — ATMs widely available in HCMC and Hanoi, but cash only in rural cycling stops between Ut Trinh and Suonsia. Stock up in HCMC before departing Feb 19.</label></li>
+  <li><input type="checkbox" id="c9"><label for="c9"><strong>Carry USD for Vietnam e-visa fee</strong> — Fee is charged in USD ($25 or $50).</label></li>
+</ul>
+</div>
+
+<div class="section-panel" id="pretrip-bookings">
+<h3 style="font-size:1.05rem;color:var(--muted);letter-spacing:0.06em;text-transform:uppercase;font-family:'Libre Franklin',sans-serif;font-weight:500;margin-bottom:12px;">Bookings</h3>
+<ul class="checklist">
+  <li><input type="checkbox" id="c10"><label for="c10"><strong>Book Lacaph Coffee Experience (HCMC)</strong> — Top hands-on Vietnamese coffee workshop, max 18 people, fills up. <a href="https://www.lacaph.com/vietnamese-coffee-experiences" class="source-link">lacaph.com/vietnamese-coffee-experiences</a>. Your HCMC dates: Feb 17–18.</label></li>
+  <li><input type="checkbox" id="c11"><label for="c11"><strong>Book Thang Long Water Puppet Theatre (Hanoi)</strong> — Shows sell out. Book ahead online. Your Hanoi dates: Feb 25–27 and Mar 3.</label></li>
+  <li><input type="checkbox" id="c12"><label for="c12"><strong>Book Pingxi Sky Lantern Festival tickets</strong> — As soon as 2027 dates are confirmed (usually announced a few months out). Sells out fast. Your Taiwan dates: Feb 14–16 — check if timing overlaps.</label></li>
+  <li><input type="checkbox" id="c13"><label for="c13"><strong>Confirm Mr. Biker Saigon cycling logistics</strong> — Confirm pickup point, gear, and route details for the Mekong Delta leg departing Feb 19.</label></li>
+</ul>
+</div>
+
+<div class="section-panel" id="pretrip-health">
+<h3 style="font-size:1.05rem;color:var(--muted);letter-spacing:0.06em;text-transform:uppercase;font-family:'Libre Franklin',sans-serif;font-weight:500;margin-bottom:12px;">Health &amp; Safety</h3>
+<ul class="checklist">
+  <li><input type="checkbox" id="c14"><label for="c14"><strong>Check travel vaccinations</strong> — See a travel health clinic 6–8 weeks before departure. For Vietnam: Hepatitis A and B, Typhoid, and Tetanus are standard. Discuss Rabies (rural Pù Luông and Mekong Delta), Japanese Encephalitis (rural areas), and Malaria prophylaxis (low-risk in main cities, discuss Pù Luông specifically with a doctor).</label></li>
+  <li><input type="checkbox" id="c15"><label for="c15"><strong>Travel insurance</strong> — Confirm coverage includes: medical evacuation, cycling (Mekong Delta leg), adventure activities (Pù Luông hiking), and trip cancellation.</label></li>
+  <li><input type="checkbox" id="c16"><label for="c16"><strong>Pack a basic medical kit for cycling and rural legs</strong> — Blister plasters, rehydration salts, antidiarrheals, and any prescription medications. Pharmacies are limited between cycling stops.</label></li>
+</ul>
+</div>
+
+<div class="section-panel" id="pretrip-documents">
+<h3 style="font-size:1.05rem;color:var(--muted);letter-spacing:0.06em;text-transform:uppercase;font-family:'Libre Franklin',sans-serif;font-weight:500;margin-bottom:12px;">Documents</h3>
+<ul class="checklist">
+  <li><input type="checkbox" id="c17"><label for="c17"><strong>Check passport validity</strong> — Must be valid 6+ months beyond your last entry date (Mar 7, 2027 for Singapore = valid until at least Sep 7, 2027) and have at least 2 blank pages for stamps.</label></li>
+  <li><input type="checkbox" id="c18"><label for="c18"><strong>Print Vietnam e-visa</strong> — Required to present printed at immigration. Don't just have it on your phone.</label></li>
+  <li><input type="checkbox" id="c19"><label for="c19"><strong>Save digital copies of all key documents</strong> — Passport, e-visa, travel insurance, hotel bookings. Store in Google Drive or email to yourself.</label></li>
+</ul>
+</div>
+
+<div class="section-panel" id="pretrip-phrases">
+<h3 style="font-size:1.05rem;color:var(--muted);letter-spacing:0.06em;text-transform:uppercase;font-family:'Libre Franklin',sans-serif;font-weight:500;margin-bottom:12px;">Vietnamese Phrases</h3>
+<table class="phrase-table">
+<thead><tr><th>English</th><th>Vietnamese</th><th>Pronunciation</th></tr></thead>
+<tbody>
+<tr><td>Hello</td><td>Xin chào</td><td>sin chow</td></tr>
+<tr><td>Good morning</td><td>Chào buổi sáng</td><td>chow bwee sang</td></tr>
+<tr><td>Thank you</td><td>Cảm ơn</td><td>gam uhn</td></tr>
+<tr><td>Excuse me / Sorry</td><td>Xin lỗi</td><td>sin loy</td></tr>
+<tr><td>Toilet / WC</td><td>Nhà vệ sinh</td><td>nya veh sin</td></tr>
+<tr><td>How much?</td><td>Bao nhiêu tiền?</td><td>bow nyew tyen?</td></tr>
+<tr><td>The bill please</td><td>Tính tiền</td><td>ting tyen</td></tr>
+<tr><td>No pork</td><td>Không thịt heo</td><td>khom tit hay-oh</td></tr>
+<tr><td>No beef</td><td>Không thịt bò</td><td>khom tit baw</td></tr>
+<tr><td>No fish</td><td>Không cá</td><td>khom kah</td></tr>
+<tr><td>Delicious!</td><td>Ngon quá!</td><td>ngon kwah!</td></tr>
+</tbody>
+</table>
+<ul class="phrase-note" style="margin-top:14px;">
+<li>Vietnamese is tonal — the same syllable means different things at different pitches. Don't stress about perfect tones; a smile and the attempt goes a long way.</li>
+<li>Cảm ơn is universally understood and appreciated everywhere, including in rural Delta homestays and Pù Luông villages.</li>
+<li>The diet phrases (không thịt heo / bò) are genuinely useful — worth memorising or keeping on your phone.</li>
+</ul>
+</div>
+</div><!-- panel-pretrip -->
+
+<!-- ═══════════════════ TAIPEI PANEL ═══════════════════ -->
+<div class="destination-panel" id="panel-taipei">
+<div class="dest-header">
+  <h2>Taipei</h2>
+  <div class="dest-meta"><span>Feb 14–16</span><span>NT$ (TWD) · 1 CAD ≈ NT$22.70</span><span>Airport: TPE (Taoyuan)</span><span>citizenM North Gate</span></div>
+</div>
+
+<div class="section-panel active" id="taipei-about">
+<div class="pull-quote">Mid-February is a good time to arrive — Lunar New Year will have just passed and the island settles back into its everyday rhythm.</div>
+<p>Taiwan is a small island of 25 million people off the southeast coast of mainland China. Taipei is its economic, political, and cultural centre: a cosmopolitan metropolis where incense-veiled temples blend seamlessly with neon modern street life. The metro area holds around 4.5 million people, known for its world-class MRT, legendary night markets, and vast array of restaurants. Food is central to Taiwanese culture, costs are low, and ease of navigation frequently surprises first-time visitors.</p>
+<br>
+<p><strong>Weather:</strong> Daytime high ~19°C / 66°F · Nighttime low 13–14°C · Cool, damp, grey, often drizzle. Pack a light jacket or thick hoodie, waterproof shell, water-resistant shoes.</p>
+<br>
+<p><strong>Getting Around:</strong> MRT — Clean, fast, affordable. Get an EasyCard on arrival — works on MRT, buses, and in convenience stores. Airport Express from TPE to Taipei Main Station: ~35 min, NT$160. citizenM is an 8-minute walk from Taipei Main Station.</p>
+<br>
+<p><strong>Washrooms:</strong> Easy. 7-Eleven, FamilyMart, Hi-Life convenience stores almost always have clean, free washrooms. MRT stations are reliable too. Essentially a non-issue.</p>
+</div>
+
+<div class="section-panel" id="taipei-events">
+<div class="entry open">
+  <div class="entry-header" onclick="toggleEntry(this)">
+    <div><div class="entry-title">Pingxi Sky Lantern Festival</div><div class="entry-tags"><span class="entry-tag">Event</span><span class="entry-tag">Book Ahead</span></div></div>
+    <span class="entry-toggle">▾</span>
+  </div>
+  <div class="entry-body">
+    <p>Mass sky lantern releases at Shifen and Pingxi. Thousands of lanterns lit simultaneously. Very popular — book as soon as 2027 dates are confirmed.</p>
+    <span class="badge">Late Feb / Early Mar (2027 TBC)</span><span class="badge">Book immediately when announced</span>
+  </div>
+</div>
+<div class="entry">
+  <div class="entry-header" onclick="toggleEntry(this)">
+    <div><div class="entry-title">Cherry Blossoms</div><div class="entry-tags"><span class="entry-tag">Seasonal</span></div></div>
+    <span class="entry-toggle">▾</span>
+  </div>
+  <div class="entry-body">
+    <p>Peak bloom mid-Feb to mid-Mar. Top spot: Lohas Park, Neihu District — 10 min walk from MRT. Free to visit.</p>
+    <span class="badge">Mid-Feb to Mid-Mar</span>
+  </div>
+</div>
+</div>
+
+<div class="section-panel" id="taipei-sites">
+<div class="entry">
+  <div class="entry-header" onclick="toggleEntry(this)">
+    <div><div class="entry-title">Longshan Temple</div><div class="entry-tags"><span class="entry-tag">Temple</span></div></div>
+    <span class="entry-toggle">▾</span>
+  </div>
+  <div class="entry-body">
+    <p>Buddhist, Taoist and folk deities worshipped here since 1738 — one of Taipei's most important spiritual sites, thick with incense.</p>
+    <a class="maps-link" href="https://maps.google.com/?q=211+Guangzhou+St,+Wanhua+District,+Taipei" target="_blank">📍 211 Guangzhou St, Wanhua District</a>
+  </div>
+</div>
+<div class="entry">
+  <div class="entry-header" onclick="toggleEntry(this)">
+    <div><div class="entry-title">National Palace Museum</div><div class="entry-tags"><span class="entry-tag">Museum</span></div></div>
+    <span class="entry-toggle">▾</span>
+  </div>
+  <div class="entry-body">
+    <p>World-famous collection including the jade cabbage and jade pork belly artefacts. Follow the thematic route if time is short.</p>
+    <a class="maps-link" href="https://maps.google.com/?q=221+Sec+2+Zhishan+Rd+Shilin+Taipei" target="_blank">📍 221 Sec 2, Zhishan Rd, Shilin District</a>
+  </div>
+</div>
+<div class="entry">
+  <div class="entry-header" onclick="toggleEntry(this)">
+    <div><div class="entry-title">Elephant Mountain (Xiangshan)</div><div class="entry-tags"><span class="entry-tag">Hike</span></div></div>
+    <span class="entry-toggle">▾</span>
+  </div>
+  <div class="entry-body">
+    <p>Short steep hike to Six Boulders Observation Deck — the classic Taipei 101 panorama. Go at sunset.</p>
+    <span class="badge">30 min on MRT</span><span class="badge">Sunset recommended</span>
+    <a class="maps-link" href="https://maps.google.com/?q=Xiangshan+MRT+Taipei" target="_blank">📍 Xiangshan MRT, Red Line</a>
+  </div>
+</div>
+<div class="entry">
+  <div class="entry-header" onclick="toggleEntry(this)">
+    <div><div class="entry-title">MOCA Taipei</div></div>
+    <span class="entry-toggle">▾</span>
+  </div>
+  <div class="entry-body">
+    <p>Taiwan's first dedicated contemporary art museum, in a beautifully preserved early 1900s school building. Low-key, low-cost, walkable from citizenM.</p>
+    <a class="maps-link" href="https://maps.google.com/?q=39+Chang'an+W+Rd+Datong+Taipei" target="_blank">📍 39 Chang'an W Rd, Datong District</a>
+  </div>
+</div>
+<div class="entry">
+  <div class="entry-header" onclick="toggleEntry(this)">
+    <div><div class="entry-title">Taipei 101 + Xinyi District</div></div>
+    <span class="entry-toggle">▾</span>
+  </div>
+  <div class="entry-body">
+    <p>Bamboo-shaped skyscraper with public observatory. Eight sections (eight = prosperity in Chinese culture). The 660-tonne tuned mass damper is visible from the 89th floor. Xinyi is the modern commercial heart of the city.</p>
+    <a class="maps-link" href="https://maps.google.com/?q=7+Xinyi+Rd+Sec+5+Xinyi+Taipei" target="_blank">📍 7 Xinyi Rd Sec 5, Xinyi District</a>
+  </div>
+</div>
+<div class="entry">
+  <div class="entry-header" onclick="toggleEntry(this)">
+    <div><div class="entry-title">Beitou Hot Springs</div></div>
+    <span class="entry-toggle">▾</span>
+  </div>
+  <div class="entry-body">
+    <p>Natural hot spring district in the north of the city. Pair with the Beitou Public Library — both a 5-minute walk apart.</p>
+    <span class="badge">40 min MRT, Red Line north</span>
+    <a class="maps-link" href="https://maps.google.com/?q=Beitou+District+Taipei" target="_blank">📍 Beitou District</a>
+  </div>
+</div>
+<div class="entry">
+  <div class="entry-header" onclick="toggleEntry(this)">
+    <div><div class="entry-title">Dihua Street &amp; Yongle Market</div><div class="entry-tags"><span class="entry-tag">Market</span><span class="entry-tag">5 min from citizenM</span></div></div>
+    <span class="entry-toggle">▾</span>
+  </div>
+  <div class="entry-body">
+    <p>Taipei's oldest street. Restored Qing Dynasty shophouses housing tea merchants, herbal medicine stores, and century-old family businesses. Yongle Market at the south end: one of Taiwan's most celebrated fabric and craft markets — Japanese and Taiwanese textiles across multiple floors.</p>
+    <span class="badge">5 min walk from citizenM</span><span class="badge">Open daily</span>
+    <a class="maps-link" href="https://maps.google.com/?q=Dihua+St+Datong+District+Taipei" target="_blank">📍 Dihua St, Datong District</a>
+  </div>
+</div>
+<div class="entry">
+  <div class="entry-header" onclick="toggleEntry(this)">
+    <div><div class="entry-title">Taipei Expo Farmer's Market</div><div class="entry-tags"><span class="entry-tag">Market</span><span class="entry-tag">Open Feb 14 ✓</span></div></div>
+    <span class="entry-toggle">▾</span>
+  </div>
+  <div class="entry-body">
+    <p>120+ stalls run by farmers from across Taiwan. Each week themed around a different county's produce. Open Saturday and Sunday, 10am–6pm at Taipei Expo Park (Yuanshan MRT, Exit 1). Open your first day — a strong itinerary fit.</p>
+    <span class="badge">Sat–Sun only</span>
+    <a class="maps-link" href="https://maps.google.com/?q=Taipei+Expo+Park+Yuanshan" target="_blank">📍 Taipei Expo Park, Yuanshan MRT</a>
+  </div>
+</div>
+<div class="entry">
+  <div class="entry-header" onclick="toggleEntry(this)">
+    <div><div class="entry-title">Shilin Night Market</div><div class="entry-tags"><span class="entry-tag">Market</span></div></div>
+    <span class="entry-toggle">▾</span>
+  </div>
+  <div class="entry-body">
+    <p>Taipei's most famous night market — best visited in the evening. Street food, snacks, games.</p>
+    <span class="badge">Evening</span><span class="badge">3 MRT stops, ~25 min</span>
+  </div>
+</div>
+<div class="entry">
+  <div class="entry-header" onclick="toggleEntry(this)">
+    <div><div class="entry-title">Eslite Spectrum Songyan / Songshan Cultural Park</div><div class="entry-tags"><span class="entry-tag">Architecture</span><span class="entry-tag">Half day</span></div></div>
+    <span class="entry-toggle">▾</span>
+  </div>
+  <div class="entry-body">
+    <p>A 6.6-hectare former tobacco factory (est. 1937) converted into a cultural hub — one of Taipei's strongest examples of adaptive reuse. Japanese modernist industrial architecture repurposed for exhibition spaces, boutique shops, designer studios, and a landscaped park. Extraordinarily selective about what it carries.</p>
+    <span class="badge">Xinyi District</span><span class="badge">Half day</span>
+    <a class="maps-link" href="https://maps.google.com/?q=11+Songshou+Rd+Xinyi+Taipei" target="_blank">📍 11 Songshou Rd, Xinyi District</a>
+  </div>
+</div>
+<div class="entry">
+  <div class="entry-header" onclick="toggleEntry(this)">
+    <div><div class="entry-title">Beitou Public Library</div><div class="entry-tags"><span class="entry-tag">Architecture</span><span class="entry-tag">Free</span></div></div>
+    <span class="entry-toggle">▾</span>
+  </div>
+  <div class="entry-body">
+    <p>Named one of the world's 25 most beautiful public libraries. Taipei's first green architecture project (2006) — warm two-storey wooden structure blends into the hillside of Beitou Park. Solar panels, rainwater capture. Free to enter. Pair with the hot springs (5-min walk).</p>
+    <span class="badge">Free entry</span><span class="badge">Tue–Sun</span><span class="badge">Xinbeitou MRT</span>
+  </div>
+</div>
+<div class="entry">
+  <div class="entry-header" onclick="toggleEntry(this)">
+    <div><div class="entry-title">Chiang Kai-shek Memorial Hall</div><div class="entry-tags"><span class="entry-tag">Landmark</span></div></div>
+    <span class="entry-toggle">▾</span>
+  </div>
+  <div class="entry-body">
+    <p>White marble structure with distinctive blue octagonal roof, modelled on the Temple of Heaven in Beijing. Each staircase has 89 steps — Chiang's age at death. Guard-mounting ceremony runs at regular intervals inside.</p>
+    <a class="maps-link" href="https://maps.google.com/?q=21+Zhongshan+S+Rd+Zhongzheng+Taipei" target="_blank">📍 Zhongzheng District</a>
+  </div>
+</div>
+<div class="entry">
+  <div class="entry-header" onclick="toggleEntry(this)">
+    <div><div class="entry-title">Yangmingshan National Park</div></div>
+    <span class="entry-toggle">▾</span>
+  </div>
+  <div class="entry-body">
+    <p>Volcanic hillsides, flower gardens, and hiking trails. Good half-day escape from the city.</p>
+    <span class="badge">45–60 min by MRT + bus</span>
+  </div>
+</div>
+</div>
+
+<div class="section-panel" id="taipei-eat">
+<div class="entry open">
+  <div class="entry-header" onclick="toggleEntry(this)">
+    <div><div class="entry-title">Pineapple cakes (feng li su)</div></div>
+    <span class="entry-toggle">▾</span>
+  </div>
+  <div class="entry-body"><p>Taiwan's most iconic edible souvenir — buttery pastries filled with pineapple jam, elegantly boxed. Try Chia Te or SunnyHills bakeries.</p></div>
+</div>
+<div class="entry">
+  <div class="entry-header" onclick="toggleEntry(this)">
+    <div><div class="entry-title">High-mountain oolong tea</div></div>
+    <span class="entry-toggle">▾</span>
+  </div>
+  <div class="entry-body"><p>Grown in Alishan and Lishan. Fragrant and floral. Buy at a specialty shop with packaged tins — not supermarkets.</p></div>
+</div>
+<div class="entry">
+  <div class="entry-header" onclick="toggleEntry(this)">
+    <div><div class="entry-title">Bubble tea (boba)</div></div>
+    <span class="entry-toggle">▾</span>
+  </div>
+  <div class="entry-body"><p>Invented in Taiwan — worth one proper sit-down version at origin. Skip the chains; look for a local shop using real tapioca and brewed tea.</p></div>
+</div>
+<div class="entry">
+  <div class="entry-header" onclick="toggleEntry(this)">
+    <div><div class="entry-title">Terra Bean to Bar</div><div class="entry-tags"><span class="entry-tag">Chocolate</span></div></div>
+    <span class="entry-toggle">▾</span>
+  </div>
+  <div class="entry-body">
+    <p>Taiwan's premier bean-to-bar brand. Widest range of single-origin cacao origins in Taipei. Signature nitrogen-infused chocolate drinks. Cafe atmosphere, walkable from Da'an MRT.</p>
+    <a class="maps-link" href="https://maps.google.com/?q=7+Wenzhou+St+Da'an+Taipei" target="_blank">📍 No. 7 Wenzhou St, Da'an</a>
+  </div>
+</div>
+<div class="entry">
+  <div class="entry-header" onclick="toggleEntry(this)">
+    <div><div class="entry-title">Fu Wan Chocolate</div><div class="entry-tags"><span class="entry-tag">Chocolate</span></div></div>
+    <span class="entry-toggle">▾</span>
+  </div>
+  <div class="entry-body">
+    <p>Taiwan's leading producer using locally grown Pingtung County cacao. Available at Taipei 101 — convenient pickup on the way out.</p>
+    <a class="maps-link" href="https://maps.google.com/?q=Taipei+101" target="_blank">📍 Taipei 101</a>
+  </div>
+</div>
+<div class="entry">
+  <div class="entry-header" onclick="toggleEntry(this)">
+    <div><div class="entry-title">Fujin Tree 353 Café</div><div class="entry-tags"><span class="entry-tag">Coffee</span></div></div>
+    <span class="entry-toggle">▾</span>
+  </div>
+  <div class="entry-body"><p>Beloved neighbourhood café on Fujin Street in Songshan. Airy, plant-filled space with excellent single-origin pour-overs. Pairs well with a walk down the quiet boutique-lined street outside.</p></div>
+</div>
+<div class="entry">
+  <div class="entry-header" onclick="toggleEntry(this)">
+    <div><div class="entry-title">Fika Fika Café</div><div class="entry-tags"><span class="entry-tag">Coffee</span></div></div>
+    <span class="entry-toggle">▾</span>
+  </div>
+  <div class="entry-body"><p>Nordic-inspired café in Da'an. Winner of the Nordic Barista Cup. Serious coffee in a calm, Scandinavian-minimal interior.</p></div>
+</div>
+<div class="entry">
+  <div class="entry-header" onclick="toggleEntry(this)">
+    <div><div class="entry-title">Snow King Ice Cream (Xue Wang)</div><div class="entry-tags"><span class="entry-tag">Ice Cream</span></div></div>
+    <span class="entry-toggle">▾</span>
+  </div>
+  <div class="entry-body">
+    <p>Over 70 flavours — pork floss, Taiwanese basil, wasabi, taro, lychee, soy milk. No English sign, tiny shop, casual takeout.</p>
+    <a class="maps-link" href="https://maps.google.com/?q=Snow+King+Ice+Cream+Ximending+Taipei" target="_blank">📍 Ximending area, walkable from citizenM</a>
+  </div>
+</div>
+<div class="entry">
+  <div class="entry-header" onclick="toggleEntry(this)">
+    <div><div class="entry-title">Lutetia</div><div class="entry-tags"><span class="entry-tag">Bakery</span></div></div>
+    <span class="entry-toggle">▾</span>
+  </div>
+  <div class="entry-body">
+    <p>Most consistently praised French bakery in Taipei. Almond croissant and Earl Grey chocolate bread are the standouts. Small cafe with open-kitchen bakery. Tianmu/Shilin area.</p>
+    <a class="maps-link" href="https://maps.google.com/?q=446+Sec+6+Zhongshan+N+Rd+Shilin+Taipei" target="_blank">📍 446 Sec 6, Zhongshan N. Rd., Shilin</a>
+  </div>
+</div>
+</div>
+
+<div class="section-panel" id="taipei-restaurants">
+<p style="color:var(--muted);font-style:italic;">To be researched</p>
+</div>
+
+<div class="section-panel" id="taipei-neighbourhoods">
+<div class="entry open">
+  <div class="entry-header" onclick="toggleEntry(this)">
+    <div><div class="entry-title">North Gate / Dadaocheng</div><div class="entry-tags"><span class="entry-tag">5 min from citizenM</span></div></div>
+    <span class="entry-toggle">▾</span>
+  </div>
+  <div class="entry-body"><p>On the doorstep of citizenM. Dihua Street, Qing Dynasty shophouses, tea merchants, weekend market.</p></div>
+</div>
+<div class="entry">
+  <div class="entry-header" onclick="toggleEntry(this)">
+    <div><div class="entry-title">Ximending</div></div>
+    <span class="entry-toggle">▾</span>
+  </div>
+  <div class="entry-body"><p>Youth and pop-culture district. Street food, street art, independent fashion, the Red House theatre. 5–8 min walk from citizenM.</p></div>
+</div>
+<div class="entry">
+  <div class="entry-header" onclick="toggleEntry(this)">
+    <div><div class="entry-title">Zhongshan</div></div>
+    <span class="entry-toggle">▾</span>
+  </div>
+  <div class="entry-body"><p>Boutique shops, Japanese-era buildings, coffee culture, low-key galleries. 1 MRT stop (~10 min).</p></div>
+</div>
+<div class="entry">
+  <div class="entry-header" onclick="toggleEntry(this)">
+    <div><div class="entry-title">Da'an</div></div>
+    <span class="entry-toggle">▾</span>
+  </div>
+  <div class="entry-body"><p>Residential, leafy, excellent local eating. Go on weekdays — weekends are mobbed. 2–3 MRT stops.</p></div>
+</div>
+<div class="entry">
+  <div class="entry-header" onclick="toggleEntry(this)">
+    <div><div class="entry-title">Xinyi / Taipei 101</div></div>
+    <span class="entry-toggle">▾</span>
+  </div>
+  <div class="entry-body"><p>Modern commercial district, observatory, Eslite Spectrum, upscale malls. 2–3 MRT stops.</p></div>
+</div>
+</div>
+</div><!-- panel-taipei -->
+
+<!-- ═══════════════════ HCMC PANEL ═══════════════════ -->
+<div class="destination-panel" id="panel-hcmc">
+<div class="dest-header">
+  <h2>Ho Chi Minh City</h2>
+  <div class="dest-meta"><span>Feb 17–18</span><span>VND · 1 CAD ≈ 19,000 VND</span><span>Airport: SGN (Tan Son Nhat)</span></div>
+</div>
+
+<div class="section-panel active" id="hcmc-about">
+<p>Ho Chi Minh City — still widely called Saigon — is Vietnam's largest city and its economic engine, with a population of over 9 million. Its history runs from a Khmer fishing village to a French colonial stronghold to the focal point of the Vietnam War, renamed after the fall of Saigon in 1975. For travellers, it's a city of relentless energy — chaotic motorbike traffic, excellent coffee, war history you can walk through, and neighbourhood life that rewards anyone willing to get off the main drag.</p>
+<br>
+<p><strong>Weather:</strong> Daytime high 33–34°C / 91°F · Nighttime ~23°C · Hot, dry season. Lightweight breathable clothes, SPF 30+ sunscreen, sun hat, sunglasses. Carry a large scarf or sarong for temple visits.</p>
+<br>
+<p><strong>Getting Around:</strong> Grab — primary transport. Book from the app before exiting arrivals. Fare fixed upfront (~100,000–150,000 VND from SGN). Stick to Vinasun or Mai Linh metered taxis if Grab is surging. Most sites in District 1 are walkable.</p>
+<br>
+<p><strong>Washrooms:</strong> More variable. In cities, cafés and restaurants are your most reliable option. Public toilets near markets usually charge 2,000–5,000 VND — keep small change. Two rules everywhere in Vietnam: carry your own toilet paper (rarely provided), and don't flush it — use the bin beside the toilet.</p>
+</div>
+
+<div class="section-panel" id="hcmc-events">
+<div class="entry open">
+  <div class="entry-header" onclick="toggleEntry(this)">
+    <div><div class="entry-title">Post-Tet Atmosphere</div></div>
+    <span class="entry-toggle">▾</span>
+  </div>
+  <div class="entry-body">
+    <p>Tet 2027 falls on Feb 6 (public holidays Feb 3–11). You arrive just after. Expect lingering decorations, flower markets winding down, and a city returning to normal rhythm. Pagodas and temples remain busy throughout February and March.</p>
+    <span class="badge">Feb 14 onwards</span>
+  </div>
+</div>
+<div class="entry">
+  <div class="entry-header" onclick="toggleEntry(this)">
+    <div><div class="entry-title">Ao Dai Festival</div></div>
+    <span class="entry-toggle">▾</span>
+  </div>
+  <div class="entry-body">
+    <p>Annual festival on Nguyen Hue Street, District 1. Parade of thousands of women in traditional Vietnamese Ao Dai dress, plus cultural performances. Colourful and very photogenic.</p>
+    <span class="badge">Typically March (2027 dates TBC)</span>
+  </div>
+</div>
+</div>
+
+<div class="section-panel" id="hcmc-sites">
+<div class="entry open">
+  <div class="entry-header" onclick="toggleEntry(this)">
+    <div><div class="entry-title">War Remnants Museum</div><div class="entry-tags"><span class="entry-tag">Museum</span><span class="entry-tag">Top Pick</span></div></div>
+    <span class="entry-toggle">▾</span>
+  </div>
+  <div class="entry-body">
+    <p>Powerful and unflinching — the Vietnam War from the Vietnamese perspective. US military equipment, photographs, extensive Agent Orange documentation. Go early, allow at least 2 hours.</p>
+    <a class="maps-link" href="https://maps.google.com/?q=28+Vo+Van+Tan+St+District+3+Ho+Chi+Minh+City" target="_blank">📍 28 Vo Van Tan St, District 3</a>
+  </div>
+</div>
+<div class="entry">
+  <div class="entry-header" onclick="toggleEntry(this)">
+    <div><div class="entry-title">Reunification Palace</div><div class="entry-tags"><span class="entry-tag">Historic</span><span class="entry-tag">Top Pick</span></div></div>
+    <span class="entry-toggle">▾</span>
+  </div>
+  <div class="entry-body">
+    <p>Preserved exactly as of April 30, 1975. Five floors: the president's formal rooms, rooftop helipad, a Bond-film bar, and the basement bunker with vintage radio equipment and tactical maps. One of the most immersive sites on the entire trip.</p>
+    <a class="maps-link" href="https://maps.google.com/?q=135+Nam+Ky+Khoi+Nghia+St+District+1+Ho+Chi+Minh+City" target="_blank">📍 135 Nam Ky Khoi Nghia St, District 1</a>
+  </div>
+</div>
+<div class="entry">
+  <div class="entry-header" onclick="toggleEntry(this)">
+    <div><div class="entry-title">Saigon Central Post Office</div><div class="entry-tags"><span class="entry-tag">Architecture</span><span class="entry-tag">Free</span></div></div>
+    <span class="entry-toggle">▾</span>
+  </div>
+  <div class="entry-body">
+    <p>Built 1886–1891, designed by Gustave Eiffel. Soaring arched ceilings, patterned tile floors, Gothic and Renaissance detailing, and two enormous antique maps painted on the walls. Still a working post office — you can buy postcards and mail letters without paying entry.</p>
+    <span class="badge">Free entry</span>
+    <a class="maps-link" href="https://maps.google.com/?q=2+Cong+Xa+Paris+Ben+Nghe+District+1+Ho+Chi+Minh+City" target="_blank">📍 2 Cong Xa Paris, District 1</a>
+  </div>
+</div>
+<div class="entry">
+  <div class="entry-header" onclick="toggleEntry(this)">
+    <div><div class="entry-title">Notre Dame Cathedral</div></div>
+    <span class="entry-toggle">▾</span>
+  </div>
+  <div class="entry-body">
+    <p>Twin 58-metre bell towers built from imported French red brick — shipped from Marseille and has never been painted or grown moss in 140 years.</p>
+    <a class="maps-link" href="https://maps.google.com/?q=Notre+Dame+Cathedral+Saigon+District+1" target="_blank">📍 Ben Nghe, District 1</a>
+  </div>
+</div>
+<div class="entry">
+  <div class="entry-header" onclick="toggleEntry(this)">
+    <div><div class="entry-title">General Sciences Library</div><div class="entry-tags"><span class="entry-tag">Architecture</span></div></div>
+    <span class="entry-toggle">▾</span>
+  </div>
+  <div class="entry-body">
+    <p>Built 1968–1971. Striking geometric facade with motifs referencing the Chinese character for happiness, plus stylised dragons and phoenixes. Uses a double-skin wall system to reduce heat — an early example of climate-conscious design in Southeast Asia. Still an active public library.</p>
+    <a class="maps-link" href="https://maps.google.com/?q=69+Ly+Tu+Trong+St+District+1+Ho+Chi+Minh+City" target="_blank">📍 69 Ly Tu Trong St, District 1</a>
+  </div>
+</div>
+<div class="entry">
+  <div class="entry-header" onclick="toggleEntry(this)">
+    <div><div class="entry-title">Saigon Opera House</div><div class="entry-tags"><span class="entry-tag">Architecture</span></div></div>
+    <span class="entry-toggle">▾</span>
+  </div>
+  <div class="entry-body">
+    <p>Built 1897, modelled on the Petit Palais in Paris. Used as the Lower House of Parliament of South Vietnam 1956–1975. The ornate facade on Lam Son Square — bookended by the Rex Hotel and Caravelle — is one of the best examples of colonial urban planning in the country.</p>
+    <a class="maps-link" href="https://maps.google.com/?q=7+Lam+Son+Square+Ben+Nghe+District+1+Ho+Chi+Minh+City" target="_blank">📍 7 Lam Son Square, District 1</a>
+  </div>
+</div>
+<div class="entry">
+  <div class="entry-header" onclick="toggleEntry(this)">
+    <div><div class="entry-title">Ben Thanh Market</div><div class="entry-tags"><span class="entry-tag">Market</span></div></div>
+    <span class="entry-toggle">▾</span>
+  </div>
+  <div class="entry-body">
+    <p>The city's most iconic covered market — silk, lacquerware, and browsing. Bargain hard; start at 50% of asking price. More tourist-facing than Binh Tay but central and convenient.</p>
+    <a class="maps-link" href="https://maps.google.com/?q=Ben+Thanh+Market+District+1+Ho+Chi+Minh+City" target="_blank">📍 District 1</a>
+  </div>
+</div>
+<div class="entry">
+  <div class="entry-header" onclick="toggleEntry(this)">
+    <div><div class="entry-title">Binh Tay Market (Cholon)</div><div class="entry-tags"><span class="entry-tag">Market</span><span class="entry-tag">Half Day</span></div></div>
+    <span class="entry-toggle">▾</span>
+  </div>
+  <div class="entry-body">
+    <p>The sprawling wholesale heart of HCMC's Chinatown, established 1928. Textiles, handicrafts, spices, dried goods at true wholesale prices. Far more authentic than Ben Thanh. The French-influenced building with central courtyard and clock tower is worth seeing in its own right.</p>
+    <span class="badge">Half day trip to Cholon (District 5)</span>
+    <a class="maps-link" href="https://maps.google.com/?q=57+Thap+Muoi+St+District+6+Ho+Chi+Minh+City" target="_blank">📍 57 Thap Muoi St, District 6</a>
+  </div>
+</div>
+</div>
+
+<div class="section-panel" id="hcmc-eat">
+<div class="entry open">
+  <div class="entry-header" onclick="toggleEntry(this)">
+    <div><div class="entry-title">Vietnamese coffee — what to drink &amp; learn</div><div class="entry-tags"><span class="entry-tag">Coffee</span></div></div>
+    <span class="entry-toggle">▾</span>
+  </div>
+  <div class="entry-body">
+    <p>Vietnam is the world's second-largest coffee producer, built on robusta beans brewed through a phin filter. HCMC is the best city on the trip to learn about it in depth. Must-try styles: cà phê sữa đá (iced milk coffee with condensed milk), cà phê trứng (egg coffee), cà phê dừa (coconut coffee — best at Can Tho). To take home: a phin filter (~$5–10) and single-origin robusta from the Central Highlands.</p>
+  </div>
+</div>
+<div class="entry">
+  <div class="entry-header" onclick="toggleEntry(this)">
+    <div><div class="entry-title">Maison Marou</div><div class="entry-tags"><span class="entry-tag">Chocolate</span></div></div>
+    <span class="entry-toggle">▾</span>
+  </div>
+  <div class="entry-body">
+    <p>Flagship cafe-patisserie-chocolaterie of Vietnam's world-class bean-to-bar brand. Open kitchen where you can watch the process. Single-origin bars labelled by Vietnamese province. Free tasting classes every Saturday 3pm — your HCMC dates are Tue–Wed so you'll miss it.</p>
+    <a class="maps-link" href="https://maps.google.com/?q=167+Calmette+St+District+1+Ho+Chi+Minh+City" target="_blank">📍 167–169 Calmette St, District 1</a>
+  </div>
+</div>
+<div class="entry">
+  <div class="entry-header" onclick="toggleEntry(this)">
+    <div><div class="entry-title">Vietnam Chocolate House</div><div class="entry-tags"><span class="entry-tag">Chocolate</span></div></div>
+    <span class="entry-toggle">▾</span>
+  </div>
+  <div class="entry-body">
+    <p>Country's first multi-brand shop carrying nearly a dozen Vietnamese bean-to-bar makers under one roof. Great for sampling and comparing. Open daily 9am–10pm.</p>
+    <a class="maps-link" href="https://maps.google.com/?q=84+Ly+Tu+Trong+St+District+1+Ho+Chi+Minh+City" target="_blank">📍 84 Ly Tu Trong St, District 1</a>
+  </div>
+</div>
+<div class="entry">
+  <div class="entry-header" onclick="toggleEntry(this)">
+    <div><div class="entry-title">Lacaph Coffee Experiences</div><div class="entry-tags"><span class="entry-tag">Coffee</span><span class="entry-tag">Book Ahead</span></div></div>
+    <span class="entry-toggle">▾</span>
+  </div>
+  <div class="entry-body">
+    <p>Top hands-on coffee education in Vietnam. 2–3 hr workshop: Vietnamese coffee history, roasting demo, phin brewing, cupping. English-speaking, max 18 people.</p>
+    <span class="badge">Pre-trip booking required</span>
+    <a class="maps-link" href="https://maps.google.com/?q=220+Nguyen+Cong+Tru+District+1+Ho+Chi+Minh+City" target="_blank">📍 220 Nguyen Cong Tru, District 1</a>
+  </div>
+</div>
+<div class="entry">
+  <div class="entry-header" onclick="toggleEntry(this)">
+    <div><div class="entry-title">XLIII Specialty Coffee</div><div class="entry-tags"><span class="entry-tag">Coffee</span></div></div>
+    <span class="entry-toggle">▾</span>
+  </div>
+  <div class="entry-body">
+    <p>Most recommended specialty cafe in Saigon. Competition-grade beans, 4.9 stars from 8,600+ reviews. Benchmark for the city's third-wave scene.</p>
+    <a class="maps-link" href="https://maps.google.com/?q=178A+Pasteur+St+District+1+Ho+Chi+Minh+City" target="_blank">📍 178A Pasteur St, District 1</a>
+  </div>
+</div>
+<div class="entry">
+  <div class="entry-header" onclick="toggleEntry(this)">
+    <div><div class="entry-title">OPUS</div><div class="entry-tags"><span class="entry-tag">Bakery</span></div></div>
+    <span class="entry-toggle">▾</span>
+  </div>
+  <div class="entry-body">
+    <p>Described as possibly the best croissants in Saigon. Takes three days to make a batch. Very small — mainly supplies other cafes, so worth going directly for the freshest.</p>
+    <span class="badge">Verify address on Google Maps before visiting</span>
+  </div>
+</div>
+<div class="entry">
+  <div class="entry-header" onclick="toggleEntry(this)">
+    <div><div class="entry-title">Propagaganda art prints</div></div>
+    <span class="entry-toggle">▾</span>
+  </div>
+  <div class="entry-body"><p>Iconic Vietnamese socialist poster art — originals and reproductions widely available across District 1.</p></div>
+</div>
+</div>
+
+<div class="section-panel" id="hcmc-restaurants">
+<p style="color:var(--muted);font-style:italic;">To be researched</p>
+</div>
+
+<div class="section-panel" id="hcmc-hotels">
+<div class="entry">
+  <div class="entry-header" onclick="toggleEntry(this)">
+    <div><div class="entry-title">Caravelle Saigon</div><div class="entry-tags"><span class="entry-tag">5-star</span><span class="entry-tag">~$130–180/night</span></div></div>
+    <span class="entry-toggle">▾</span>
+  </div>
+  <div class="entry-body">
+    <p>Historic 5-star on Dong Khoi Street, steps from Notre Dame, the Opera House, and Ben Thanh Market. Open since 1959, modern rooms with vintage feel, pool, gym, six dining options.</p>
+    <a class="maps-link" href="https://maps.google.com/?q=19+Lam+Son+Square+Ben+Nghe+District+1+Ho+Chi+Minh+City" target="_blank">📍 19 Lam Son Square, District 1</a>
+  </div>
+</div>
+<div class="entry">
+  <div class="entry-header" onclick="toggleEntry(this)">
+    <div><div class="entry-title">The Myst Dong Khoi</div><div class="entry-tags"><span class="entry-tag">5-star</span><span class="entry-tag">~$130–200/night</span></div></div>
+    <span class="entry-toggle">▾</span>
+  </div>
+  <div class="entry-body">
+    <p>Boutique 5-star with the most distinctive design of any hotel in this price range — curving archways and hand-carved furniture blend colonial history with modern chic. Rooftop pool, free minibar, and afternoon tea included. Strong value for the character it delivers.</p>
+    <span class="badge">⚠ Tet note: Rooms fill fast for the Feb 6 window — book months ahead.</span>
+    <a class="maps-link" href="https://maps.google.com/?q=6-8+Ho+Huan+Nghiep+St+Ben+Nghe+District+1+Ho+Chi+Minh+City" target="_blank">📍 6–8 Ho Huan Nghiep St, District 1</a>
+  </div>
+</div>
+<div class="entry">
+  <div class="entry-header" onclick="toggleEntry(this)">
+    <div><div class="entry-title">La Siesta Premium Saigon (original)</div><div class="entry-tags"><span class="entry-tag">~$150/night</span></div></div>
+    <span class="entry-toggle">▾</span>
+  </div>
+  <div class="entry-body">
+    <p>Boutique hotel on a relatively quiet side street in District 1, one block from Ben Thanh Market. Rooftop infinity pool, spa, Indochina-inspired dining, lobby grand piano. Exceptional staff — consistently the most praised element across reviews. The stronger of the two La Siesta properties.</p>
+    <span class="badge">⚠ Booking note: Two hotels with nearly identical names 2 min apart — this is the original. Google Maps often navigates to the wrong one. Double-check the address when booking.</span>
+    <a class="maps-link" href="https://maps.google.com/?q=La+Siesta+Premium+Saigon+Ly+Tu+Trong+District+1" target="_blank">📍 Ly Tu Trong St, District 1</a>
+  </div>
+</div>
+<div class="entry">
+  <div class="entry-header" onclick="toggleEntry(this)">
+    <div><div class="entry-title">Rex Hotel</div><div class="entry-tags"><span class="entry-tag">5-star</span><span class="entry-tag">~$184/night</span><span class="entry-tag">8.4/10</span></div></div>
+    <span class="entry-toggle">▾</span>
+  </div>
+  <div class="entry-body">
+    <p>Iconic historic hotel at 141 Nguyen Hue Blvd, District 1. Famous rooftop bar, steps from the pedestrian boulevard and War Remnants Museum area. Good value for location.</p>
+    <a class="maps-link" href="https://maps.google.com/?q=141+Nguyen+Hue+Blvd+District+1+Ho+Chi+Minh+City" target="_blank">📍 141 Nguyen Hue Blvd, District 1</a>
+  </div>
+</div>
+</div>
+
+<div class="section-panel" id="hcmc-neighbourhoods">
+<div class="entry open">
+  <div class="entry-header" onclick="toggleEntry(this)">
+    <div><div class="entry-title">Ben Thanh / Dong Khoi (District 1)</div></div>
+    <span class="entry-toggle">▾</span>
+  </div>
+  <div class="entry-body"><p>Ben Thanh Market, Notre Dame Cathedral, the Opera House, Nguyen Hue walking boulevard, War Remnants Museum, rooftop bars, and nightlife. Natural hotel base.</p></div>
+</div>
+<div class="entry">
+  <div class="entry-header" onclick="toggleEntry(this)">
+    <div><div class="entry-title">District 3</div></div>
+    <span class="entry-toggle">▾</span>
+  </div>
+  <div class="entry-body"><p>French-era buildings, quieter than District 1. Good for cafe-hopping and a more local feel. Walkable from District 1.</p></div>
+</div>
+<div class="entry">
+  <div class="entry-header" onclick="toggleEntry(this)">
+    <div><div class="entry-title">Cholon / Chinatown (District 5)</div></div>
+    <span class="entry-toggle">▾</span>
+  </div>
+  <div class="entry-body"><p>Saigon's Chinatown. Binh Tay Market, traditional Chinese family shops, authentic Chinese food, distinctive colonial-era architecture.</p></div>
+</div>
+</div>
+</div><!-- panel-hcmc -->
+
+<!-- ═══════════════════ MEKONG DELTA PANEL ═══════════════════ -->
+<div class="destination-panel" id="panel-mekong">
+<div class="dest-header">
+  <h2>Mekong Delta</h2>
+  <div class="dest-meta"><span>Feb 19–24</span><span>Cash only in rural areas</span><span>250km cycling · Mr. Biker Saigon</span></div>
+</div>
+
+<div class="section-panel active" id="mekong-about">
+<p>The Mekong is one of the great rivers of Asia, rising in the Tibetan Plateau and flowing nearly 4,500 km through China, Myanmar, Laos, Thailand, and Cambodia before reaching Vietnam. Its delta — where the river fans out into a vast network of channels, islands, and floodplains — is one of the most fertile regions on earth, producing more than half of Vietnam's rice and the bulk of its fruit, fish, and vegetables.</p>
+<br>
+<p>Can Tho is the largest city in the Mekong Delta and its de facto capital. The food identity is strongly rooted in Southern Vietnamese riverside cuisine — fresher and sweeter than the north, built around abundant local seafood, vegetables, and rice.</p>
+<br>
+<p>The cycling route runs HCMC → Cho Gao → Ben Tre (Vietnam's coconut capital) → Trà Vinh → Cầu Kè → Cần Thơ. <strong>No ATMs between stops</strong> — stock up on VND in HCMC before departing Feb 19.</p>
+</div>
+
+<div class="section-panel" id="mekong-lunch">
+<div class="pull-quote">Forget convenience stores — they're a city phenomenon in Vietnam and won't appear on rural Delta roads. What you'll find instead is better.</div>
+<p>Stop when you see people eating. A busy stall with plastic stools and steam coming from a pot is always a good sign. Use market towns and ferry crossings as planned stops — gaps between settlements on back roads can be longer than expected.</p>
+<br>
+<p><strong>What to look for:</strong></p>
+<br>
+<div class="entry">
+  <div class="entry-header" onclick="toggleEntry(this)">
+    <div><div class="entry-title">Bánh mì</div><div class="entry-tags"><span class="entry-tag">Grab &amp; Go</span></div></div>
+    <span class="entry-toggle">▾</span>
+  </div>
+  <div class="entry-body"><p>The easiest grab-and-go option. A vendor with a cart or basket, usually 15,000–30,000 VND. Portable, filling, no sit-down required.</p></div>
+</div>
+<div class="entry">
+  <div class="entry-header" onclick="toggleEntry(this)">
+    <div><div class="entry-title">Hủ tiếu</div><div class="entry-tags"><span class="entry-tag">Delta Signature</span></div></div>
+    <span class="entry-toggle">▾</span>
+  </div>
+  <div class="entry-body"><p>The Delta's signature noodle soup. Light, clear broth with pork or shrimp. Fast to serve, deeply local, and cheap.</p></div>
+</div>
+<div class="entry">
+  <div class="entry-header" onclick="toggleEntry(this)">
+    <div><div class="entry-title">Cơm bình dân (workers' rice)</div></div>
+    <span class="entry-toggle">▾</span>
+  </div>
+  <div class="entry-body"><p>Point at pre-cooked dishes in pots: grilled fish, stir-fried vegetables, rice. Usually 30,000–50,000 VND for a full plate.</p></div>
+</div>
+<div class="entry">
+  <div class="entry-header" onclick="toggleEntry(this)">
+    <div><div class="entry-title">Nước mía (sugarcane juice)</div></div>
+    <span class="entry-toggle">▾</span>
+  </div>
+  <div class="entry-body"><p>Pressed on the spot, cold, about 10,000–15,000 VND. Hard to pass up in the heat.</p></div>
+</div>
+<div class="entry">
+  <div class="entry-header" onclick="toggleEntry(this)">
+    <div><div class="entry-title">Fresh roadside fruit</div></div>
+    <span class="entry-toggle">▾</span>
+  </div>
+  <div class="entry-body"><p>Sold cut and bagged roadside for almost nothing. The Delta grows Vietnam's best: star apple, pomelo, citrus, coconut. Excellent mid-ride fuel.</p></div>
+</div>
+</div>
+
+<div class="section-panel" id="mekong-sites">
+<div class="entry open">
+  <div class="entry-header" onclick="toggleEntry(this)">
+    <div><div class="entry-title">Cai Rang Floating Market</div><div class="entry-tags"><span class="entry-tag">Top Pick</span><span class="entry-tag">Early Morning</span></div></div>
+    <span class="entry-toggle">▾</span>
+  </div>
+  <div class="entry-body">
+    <p>Early morning boat trip — one of the Delta's most famous markets. Vendors on boats selling fresh produce, coconuts, and local goods. Go by 6am.</p>
+    <span class="badge">~6 km from central Can Tho</span><span class="badge">Before 6am</span>
+    <a class="maps-link" href="https://maps.google.com/?q=Cai+Rang+Floating+Market+Can+Tho+Vietnam" target="_blank">📍 Cai Rang District, Can Tho</a>
+  </div>
+</div>
+<div class="entry">
+  <div class="entry-header" onclick="toggleEntry(this)">
+    <div><div class="entry-title">Ninh Kieu Quay Night Market</div></div>
+    <span class="entry-toggle">▾</span>
+  </div>
+  <div class="entry-body">
+    <p>Riverside walkway and night market right by the hotel. Good for browsing local goods and snacks.</p>
+    <a class="maps-link" href="https://maps.google.com/?q=Hai+Ba+Trung+St+Ninh+Kieu+Can+Tho" target="_blank">📍 Hai Ba Trung St, Ninh Kieu Ward</a>
+  </div>
+</div>
+</div>
+
+<div class="section-panel" id="mekong-eat">
+<div class="entry open">
+  <div class="entry-header" onclick="toggleEntry(this)">
+    <div><div class="entry-title">Cà phê dừa (coconut coffee)</div><div class="entry-tags"><span class="entry-tag">Best on the trip</span></div></div>
+    <span class="entry-toggle">▾</span>
+  </div>
+  <div class="entry-body"><p>Best version on the entire trip. Floating market vendors at Cai Rang serve it with coconuts harvested that morning — rich, tropical, sweet.</p></div>
+</div>
+<div class="entry">
+  <div class="entry-header" onclick="toggleEntry(this)">
+    <div><div class="entry-title">Ben Tre coconuts &amp; Delta produce at source</div></div>
+    <span class="entry-toggle">▾</span>
+  </div>
+  <div class="entry-body"><p>Ben Tre coconuts, fresh dragon fruit, rambutan, longan, pomelo, black pepper, cashews, cinnamon (cassia), star anise. Buy at roadside stalls — this is as fresh as it gets anywhere on the trip.</p></div>
+</div>
+</div>
+
+<div class="section-panel" id="mekong-restaurants">
+<div class="entry open">
+  <div class="entry-header" onclick="toggleEntry(this)">
+    <div><div class="entry-title">Banh Xeo 7 Toi</div><div class="entry-tags"><span class="entry-tag">Can Tho</span></div></div>
+    <span class="entry-toggle">▾</span>
+  </div>
+  <div class="entry-body">
+    <p>Local go-to for banh xeo (crispy Vietnamese pancakes) — generously filled, also does duck and vegetarian versions plus banh khot.</p>
+    <a class="maps-link" href="https://maps.google.com/?q=54+Tran+Binh+Trong+St+Can+Tho" target="_blank">📍 54 Tran Binh Trong St</a>
+  </div>
+</div>
+<div class="entry">
+  <div class="entry-header" onclick="toggleEntry(this)">
+    <div><div class="entry-title">Hao Ky</div><div class="entry-tags"><span class="entry-tag">Can Tho</span></div></div>
+    <span class="entry-toggle">▾</span>
+  </div>
+  <div class="entry-body">
+    <p>Vietnamese-Chinese spot popular with locals for dim sum, noodle soups, and wontons. Signature xiu mai (meatball dumplings) are the standout.</p>
+    <a class="maps-link" href="https://maps.google.com/?q=9+Vo+Thi+Sau+St+Can+Tho" target="_blank">📍 9 Vo Thi Sau St</a>
+  </div>
+</div>
+<div class="entry">
+  <div class="entry-header" onclick="toggleEntry(this)">
+    <div><div class="entry-title">Com Ga Cam Ky</div><div class="entry-tags"><span class="entry-tag">Can Tho</span></div></div>
+    <span class="entry-toggle">▾</span>
+  </div>
+  <div class="entry-body">
+    <p>Beloved chicken rice spot. Try com ga hap cai — poached chicken on bitter greens with rice, ~40,000 VND (~$2.10 CAD). Open daily 09:00–22:00.</p>
+    <a class="maps-link" href="https://maps.google.com/?q=37+De+Tham+St+Can+Tho" target="_blank">📍 37 De Tham St</a>
+  </div>
+</div>
+</div>
+</div><!-- panel-mekong -->
+
+<!-- ═══════════════════ HANOI PANEL ═══════════════════ -->
+<div class="destination-panel" id="panel-hanoi">
+<div class="dest-header">
+  <h2>Hanoi</h2>
+  <div class="dest-meta"><span>Feb 25–27, Mar 3 (+ Mar 5 overnight)</span><span>VND · 1 CAD ≈ 19,000 VND</span><span>Airport: HAN (Noi Bai)</span></div>
+</div>
+
+<div class="section-panel active" id="hanoi-about">
+<p>Hanoi is Vietnam's capital — a thousand-year-old city whose heartbeat emanates from the Old Quarter, where 19th-century teak-beamed shophouses shelter cafes with French names and traditional music mingles with the sound of millions of motorbikes. Where HCMC buzzes with commercial energy and forward momentum, Hanoi feels older and more layered — lakes, pagodas, French colonial architecture, and a slower pace.</p>
+<br>
+<p><strong>Weather:</strong> Late Feb: 15–20°C · Early Mar: 18–24°C · Cool, misty, humid. Mornings chilly before clearing by late morning. Light jacket for evenings. Raincoat, hat, sunglasses, and sunscreen for March. Comfortable walking shoes essential for cobbled Old Quarter streets.</p>
+<br>
+<p><strong>Getting Around:</strong> Grab — primary transport. Walking is best within the Old Quarter. Airport: Noi Bai (HAN), ~45 km — allow 45–60 min by Grab.</p>
+<br>
+<p><strong>Base:</strong> Tay Ho (West Lake) recommended — quieter, independent feel, lakeside. Old Quarter advised against as a base.</p>
+</div>
+
+<div class="section-panel" id="hanoi-events">
+<div class="entry open">
+  <div class="entry-header" onclick="toggleEntry(this)">
+    <div><div class="entry-title">Perfume Pagoda Festival</div><div class="entry-tags"><span class="entry-tag">Feb–April</span><span class="entry-tag">Day Trip</span></div></div>
+    <span class="entry-toggle">▾</span>
+  </div>
+  <div class="entry-body">
+    <p>Vietnam's longest-running annual festival. Complex of 20+ Buddhist temples built into limestone mountains. Journey starts with a 1-hour rowboat ride along scenic Yen Stream, then a hike or cable car to Huong Tich Cave. Draws 5,000–7,000 daily visitors at peak in March. Excellent day trip from Hanoi.</p>
+    <span class="badge">Feb through early April, peak March</span><span class="badge">~60 km southwest of Hanoi</span>
+  </div>
+</div>
+<div class="entry">
+  <div class="entry-header" onclick="toggleEntry(this)">
+    <div><div class="entry-title">Old Quarter Weekend Night Market</div><div class="entry-tags"><span class="entry-tag">Fri–Sun evenings</span><span class="entry-tag">You catch Feb 27 ✓</span></div></div>
+    <span class="entry-toggle">▾</span>
+  </div>
+  <div class="entry-body">
+    <p>Fri–Sun evenings (6pm–11pm) along Hang Dao and Hang Ngang — street food, crafts, textiles, lacquerware, souvenirs in a closed-to-traffic pedestrian zone. You catch the Friday evening opening (Feb 27) — a good last-night sendoff before departing for Pù Luông.</p>
+    <a class="maps-link" href="https://maps.google.com/?q=Hang+Dao+Hang+Ngang+Hoan+Kiem+Hanoi" target="_blank">📍 Hang Dao &amp; Hang Ngang, Hoan Kiem</a>
+  </div>
+</div>
+</div>
+
+<div class="section-panel" id="hanoi-sites">
+<div class="entry open">
+  <div class="entry-header" onclick="toggleEntry(this)">
+    <div><div class="entry-title">Vietnam Museum of Ethnology</div><div class="entry-tags"><span class="entry-tag">Top Pick</span><span class="entry-tag">2 hrs</span></div></div>
+    <span class="entry-toggle">▾</span>
+  </div>
+  <div class="entry-body">
+    <p>Consistently rated one of the best museums in Southeast Asia. Covers all 54 of Vietnam's ethnic groups. Reconstructed traditional houses outdoors. Particularly relevant given the hill tribe communities in Pù Luông. Allow 2 hrs.</p>
+    <a class="maps-link" href="https://maps.google.com/?q=Nguyen+Van+Huyen+St+Cau+Giay+Hanoi" target="_blank">📍 Nguyen Van Huyen St, Cau Giay (~20 min by Grab)</a>
+  </div>
+</div>
+<div class="entry">
+  <div class="entry-header" onclick="toggleEntry(this)">
+    <div><div class="entry-title">Hoa Lo Prison (Hanoi Hilton)</div></div>
+    <span class="entry-toggle">▾</span>
+  </div>
+  <div class="entry-body">
+    <p>Former French colonial prison, later used to hold American POWs. Genuinely moving and well-curated. Go early.</p>
+    <a class="maps-link" href="https://maps.google.com/?q=1+Hoa+Lo+St+Hoan+Kiem+Hanoi" target="_blank">📍 1 Hoa Lo St, Hoan Kiem</a>
+  </div>
+</div>
+<div class="entry">
+  <div class="entry-header" onclick="toggleEntry(this)">
+    <div><div class="entry-title">Temple of Literature</div></div>
+    <span class="entry-toggle">▾</span>
+  </div>
+  <div class="entry-body">
+    <p>Vietnam's first university, founded 1070. Five walled courtyards, turtle steles, classical Vietnamese architecture. Allow 1.5–2 hrs.</p>
+    <a class="maps-link" href="https://maps.google.com/?q=58+Quoc+Tu+Giam+St+Dong+Da+Hanoi" target="_blank">📍 58 Quoc Tu Giam St, Dong Da</a>
+  </div>
+</div>
+<div class="entry">
+  <div class="entry-header" onclick="toggleEntry(this)">
+    <div><div class="entry-title">Thang Long Water Puppet Theatre</div><div class="entry-tags"><span class="entry-tag">Book Ahead</span></div></div>
+    <span class="entry-toggle">▾</span>
+  </div>
+  <div class="entry-body">
+    <p>Traditional Vietnamese folk art — performers waist-deep behind a curtain manoeuvre lacquered wooden puppets on water. Live traditional music. ~50 min. Book ahead — shows sell out.</p>
+    <a class="maps-link" href="https://maps.google.com/?q=57B+Dinh+Tien+Hoang+St+Hoan+Kiem+Hanoi" target="_blank">📍 57B Dinh Tien Hoang St, Hoan Kiem</a>
+  </div>
+</div>
+<div class="entry">
+  <div class="entry-header" onclick="toggleEntry(this)">
+    <div><div class="entry-title">Hoan Kiem Lake &amp; Ngoc Son Temple</div></div>
+    <span class="entry-toggle">▾</span>
+  </div>
+  <div class="entry-body">
+    <p>The spiritual and social heart of Hanoi. Morning tai chi, evening strolls. Red The Huc Bridge leads to Ngoc Son Temple on an island (50,000 VND entry). Worth a slow wander rather than a rushed photo stop.</p>
+    <a class="maps-link" href="https://maps.google.com/?q=Hoan+Kiem+Lake+Hanoi" target="_blank">📍 Hoan Kiem District</a>
+  </div>
+</div>
+<div class="entry">
+  <div class="entry-header" onclick="toggleEntry(this)">
+    <div><div class="entry-title">Quang Ba Flower Market</div><div class="entry-tags"><span class="entry-tag">Midnight–5am</span></div></div>
+    <span class="entry-toggle">▾</span>
+  </div>
+  <div class="entry-body">
+    <p>Hanoi's main wholesale flower market. Sellers from the countryside arrive with cut flowers; wholesale buyers load motorbikes. One of the most atmospheric early-morning scenes in the city. Almost entirely locals.</p>
+    <a class="maps-link" href="https://maps.google.com/?q=Quang+An+Tay+Ho+Hanoi" target="_blank">📍 Quang An, Tay Ho</a>
+  </div>
+</div>
+<div class="entry">
+  <div class="entry-header" onclick="toggleEntry(this)">
+    <div><div class="entry-title">Long Bien Bridge</div><div class="entry-tags"><span class="entry-tag">Sunset</span></div></div>
+    <span class="entry-toggle">▾</span>
+  </div>
+  <div class="entry-body">
+    <p>The 1903 French-built cantilever rail and motorbike bridge across the Red River — bombed repeatedly during the Vietnam War, rebuilt with visible mismatched sections. Walk or cycle across for views of the river. Atmospheric at sunset. Almost no tourists.</p>
+    <a class="maps-link" href="https://maps.google.com/?q=Long+Bien+Bridge+Hanoi" target="_blank">📍 End of Hang Dau St, Hoan Kiem</a>
+  </div>
+</div>
+<div class="entry">
+  <div class="entry-header" onclick="toggleEntry(this)">
+    <div><div class="entry-title">Hanoi Ceramic Mosaic Wall</div></div>
+    <span class="entry-toggle">▾</span>
+  </div>
+  <div class="entry-body">
+    <p>6 km-long ceramic mural running along the dyke road beside the Red River, created for Hanoi's millennium in 2010. Enormous in scale, quirky in sections. Best appreciated by bicycle. Almost no tourists.</p>
+    <a class="maps-link" href="https://maps.google.com/?q=Tran+Nhat+Duat+St+Red+River+Hanoi" target="_blank">📍 Tran Nhat Duat St, Red River dyke</a>
+  </div>
+</div>
+<div class="entry">
+  <div class="entry-header" onclick="toggleEntry(this)">
+    <div><div class="entry-title">Hanoi Opera House</div><div class="entry-tags"><span class="entry-tag">Architecture</span></div></div>
+    <span class="entry-toggle">▾</span>
+  </div>
+  <div class="entry-body">
+    <p>A smaller counterpart to the Palais Garnier in Paris — construction began 1901. Corinthian columns, curved balconies, a Baroque dome over the main entrance, and Art Nouveau detailing on the side rooflines. Interior tours run most days 10:30am–12pm (~VND 120,000, max 20 people, 70 minutes).</p>
+    <a class="maps-link" href="https://maps.google.com/?q=1+Trang+Tien+St+Hoan+Kiem+Hanoi" target="_blank">📍 1 Trang Tien St, Hoan Kiem</a>
+  </div>
+</div>
+<div class="entry">
+  <div class="entry-header" onclick="toggleEntry(this)">
+    <div><div class="entry-title">West Lake (Ho Tay) &amp; Tran Quoc Pagoda</div></div>
+    <span class="entry-toggle">▾</span>
+  </div>
+  <div class="entry-body">
+    <p>Hanoi's largest lake (~500 ha) — good for an early morning cycle or walk. On its western shore, Tran Quoc Pagoda (6th century) sits on a small peninsula with a distinctive multi-tiered tower. Peaceful and photogenic, especially at dusk.</p>
+    <a class="maps-link" href="https://maps.google.com/?q=Thanh+Nien+Rd+Tay+Ho+Hanoi" target="_blank">📍 Thanh Nien Rd, Tay Ho</a>
+  </div>
+</div>
+<div class="entry">
+  <div class="entry-header" onclick="toggleEntry(this)">
+    <div><div class="entry-title">Bat Trang Pottery Village</div><div class="entry-tags"><span class="entry-tag">Day Trip · 30 min</span></div></div>
+    <span class="entry-toggle">▾</span>
+  </div>
+  <div class="entry-body">
+    <p>Vietnam's most famous pottery village, active for 700+ years. Workshops where you can throw your own pot, kilns, and a large market for finished ceramics. Relaxed, genuinely local-feeling, easy to do independently by Grab or bus (Route 47).</p>
+    <a class="maps-link" href="https://maps.google.com/?q=Bat+Trang+Pottery+Village+Hanoi" target="_blank">📍 13 km from Old Quarter</a>
+  </div>
+</div>
+<div class="entry">
+  <div class="entry-header" onclick="toggleEntry(this)">
+    <div><div class="entry-title">Ninh Binh (Day Trip)</div><div class="entry-tags"><span class="entry-tag">Day Trip · 2 hrs</span><span class="entry-tag">Top Pick</span></div></div>
+    <span class="entry-toggle">▾</span>
+  </div>
+  <div class="entry-body">
+    <p>The clear best day trip from Hanoi. Limestone karst scenery ("Ha Long Bay on land"), river boat trips through cave systems at Trang An, the Hang Mua viewpoint climb (~500 stone steps, 100,000 VND entry — best at sunrise), ancient Hoa Lu citadel ruins. Easily done in one day.</p>
+    <span class="badge">90 km · ~2 hrs</span>
+    <a class="maps-link" href="https://maps.google.com/?q=Ninh+Binh+Vietnam" target="_blank">📍 Ninh Binh</a>
+  </div>
+</div>
+<div class="entry">
+  <div class="entry-header" onclick="toggleEntry(this)">
+    <div><div class="entry-title">54 Traditions Gallery</div><div class="entry-tags"><span class="entry-tag">Store · Essential Stop</span></div></div>
+    <span class="entry-toggle">▾</span>
+  </div>
+  <div class="entry-body">
+    <p>The standout store on the entire trip. Founded by a former New York physician and his wife — the only gallery in Vietnam devoted to the arts and crafts of all 54 ethnic groups. Many of their original finds are now held by the Metropolitan Museum and the Musée du quai Branly in Paris. Directly relevant to your Pù Luông village context.</p>
+    <a class="maps-link" href="https://maps.google.com/?q=44B+Hang+Bun+St+Ba+Dinh+Hanoi" target="_blank">📍 44B Hang Bun St, Ba Dinh</a>
+  </div>
+</div>
+<div class="entry">
+  <div class="entry-header" onclick="toggleEntry(this)">
+    <div><div class="entry-title">Craft Link</div><div class="entry-tags"><span class="entry-tag">Store</span></div></div>
+    <span class="entry-toggle">▾</span>
+  </div>
+  <div class="entry-body">
+    <p>Non-profit supporting fair trade, working directly with local tribal communities. Woodwork, lacquer paintings, ceramics, and textiles. One of the few places in Hanoi where you can be certain you're purchasing locally produced craft.</p>
+    <a class="maps-link" href="https://maps.google.com/?q=43+Van+Mieu+St+Dong+Da+Hanoi" target="_blank">📍 43 Van Mieu St, Dong Da</a>
+  </div>
+</div>
+<div class="entry">
+  <div class="entry-header" onclick="toggleEntry(this)">
+    <div><div class="entry-title">Hanoia House</div><div class="entry-tags"><span class="entry-tag">Store</span></div></div>
+    <span class="entry-toggle">▾</span>
+  </div>
+  <div class="entry-body">
+    <p>A showcase for Vietnamese lacquerware at its most design-forward — vibrant homewares, jewellery, and decorative items all made using lacquer. The 17th-century building itself is worth exploring: three rooms divided by open-air courtyards.</p>
+    <a class="maps-link" href="https://maps.google.com/?q=Hang+Dao+St+Old+Quarter+Hanoi" target="_blank">📍 Hang Dao St, Old Quarter</a>
+  </div>
+</div>
+</div>
+
+<div class="section-panel" id="hanoi-eat">
+<div class="entry open">
+  <div class="entry-header" onclick="toggleEntry(this)">
+    <div><div class="entry-title">Maison Marou Hanoi</div><div class="entry-tags"><span class="entry-tag">Chocolate</span></div></div>
+    <span class="entry-toggle">▾</span>
+  </div>
+  <div class="entry-body">
+    <p>Showroom-cafe where all products are made directly at the counter in front of customers. Same world-class single-origin Vietnamese chocolate as HCMC but with live production visible. Look for Saturday 3pm tasting classes (no reservation, free samples).</p>
+    <a class="maps-link" href="https://maps.google.com/?q=91A+Tho+Nhuom+St+Hoan+Kiem+Hanoi" target="_blank">📍 91A Tho Nhuom St, Hoan Kiem</a>
+  </div>
+</div>
+<div class="entry">
+  <div class="entry-header" onclick="toggleEntry(this)">
+    <div><div class="entry-title">Cafe Giang</div><div class="entry-tags"><span class="entry-tag">Coffee</span><span class="entry-tag">Must Try</span></div></div>
+    <span class="entry-toggle">▾</span>
+  </div>
+  <div class="entry-body">
+    <p>Originator of Hanoi egg coffee (cà phê trứng) since 1946. Whipped egg yolk + condensed milk on top of strong espresso — rich, creamy, like liquid tiramisu. ~50,000 VND. Tucked inside a small alley — look for the sign. A must.</p>
+    <a class="maps-link" href="https://maps.google.com/?q=39+Nguyen+Huu+Huan+St+Hoan+Kiem+Hanoi" target="_blank">📍 39 Nguyen Huu Huan St, Hoan Kiem</a>
+  </div>
+</div>
+<div class="entry">
+  <div class="entry-header" onclick="toggleEntry(this)">
+    <div><div class="entry-title">Blackbird Coffee</div><div class="entry-tags"><span class="entry-tag">Coffee</span></div></div>
+    <span class="entry-toggle">▾</span>
+  </div>
+  <div class="entry-body">
+    <p>Focuses exclusively on Vietnamese beans with specialty standards. Old Quarter, laptop-friendly, strong wifi.</p>
+    <a class="maps-link" href="https://maps.google.com/?q=5+Chan+Cam+St+Hoan+Kiem+Hanoi" target="_blank">📍 5 Chan Cam St, Hoan Kiem</a>
+  </div>
+</div>
+<div class="entry">
+  <div class="entry-header" onclick="toggleEntry(this)">
+    <div><div class="entry-title">VULAB</div><div class="entry-tags"><span class="entry-tag">Coffee</span></div></div>
+    <span class="entry-toggle">▾</span>
+  </div>
+  <div class="entry-body">
+    <p>Pharmacist-turned-roaster with SCA sensory certification and Q Grader credentials. Roasts in-house; offers phin, syphon, aeropress, moka pot. Serious and approachable.</p>
+    <a class="maps-link" href="https://maps.google.com/?q=30B+Xom+Ha+Hoi+alley+Hoan+Kiem+Hanoi" target="_blank">📍 30B Xom Ha Hoi alley, Hoan Kiem</a>
+  </div>
+</div>
+<div class="entry">
+  <div class="entry-header" onclick="toggleEntry(this)">
+    <div><div class="entry-title">Trang Tien Ice Cream (Kem Trang Tien)</div><div class="entry-tags"><span class="entry-tag">Ice Cream</span></div></div>
+    <span class="entry-toggle">▾</span>
+  </div>
+  <div class="entry-body">
+    <p>A Hanoi institution. Flavours: green sticky rice, green bean, taro, coconut milk, cocoa — all distinctively Vietnamese. 15,000 VND a cone. Walking around Hoan Kiem Lake with a Trang Tien cone is a quintessential Hanoi experience.</p>
+    <a class="maps-link" href="https://maps.google.com/?q=35+Trang+Tien+St+Old+Quarter+Hanoi" target="_blank">📍 35 Trang Tien St, Old Quarter</a>
+  </div>
+</div>
+<div class="entry">
+  <div class="entry-header" onclick="toggleEntry(this)">
+    <div><div class="entry-title">O'Douceurs French Pastry &amp; Bakery</div><div class="entry-tags"><span class="entry-tag">Bakery</span></div></div>
+    <span class="entry-toggle">▾</span>
+  </div>
+  <div class="entry-body">
+    <p>The strongest French bakery in Hanoi. Owned by a French pastry chef. Fresh croissants from breakfast alongside eclairs, Paris-Brest, and fruit tarts. Two locations: Tay Ho (villa with outdoor seating overlooking a pond — more atmospheric) and Tran Nhan Tong (more central).</p>
+    <a class="maps-link" href="https://maps.google.com/?q=72+Xuan+Dieu+Tay+Ho+Hanoi" target="_blank">📍 72 Xuan Dieu, Tay Ho · 56D Tran Nhan Tong</a>
+  </div>
+</div>
+<div class="entry">
+  <div class="entry-header" onclick="toggleEntry(this)">
+    <div><div class="entry-title">Banh Mi Mama</div><div class="entry-tags"><span class="entry-tag">Bakery</span></div></div>
+    <span class="entry-toggle">▾</span>
+  </div>
+  <div class="entry-body">
+    <p>Small kiosk near St. Joseph's Cathedral. Lines of 30 minutes not uncommon. A local and visitor institution.</p>
+    <a class="maps-link" href="https://maps.google.com/?q=54+Ly+Quoc+Su+St+Hoan+Kiem+Hanoi" target="_blank">📍 54 Ly Quoc Su St, Hoan Kiem</a>
+  </div>
+</div>
+<div class="entry">
+  <div class="entry-header" onclick="toggleEntry(this)">
+    <div><div class="entry-title">ô mai (spiced dried fruit)</div></div>
+    <span class="entry-toggle">▾</span>
+  </div>
+  <div class="entry-body">
+    <p>Beloved Hanoi snack — sweet, sour, salty, spicy dried apricot/plum. Best on Hang Duong Street, Old Quarter.</p>
+    <a class="maps-link" href="https://maps.google.com/?q=Hang+Duong+Street+Old+Quarter+Hanoi" target="_blank">📍 Hang Duong Street</a>
+  </div>
+</div>
+</div>
+
+<div class="section-panel" id="hanoi-restaurants">
+<div class="entry open">
+  <div class="entry-header" onclick="toggleEntry(this)">
+    <div><div class="entry-title">The East</div><div class="entry-tags"><span class="entry-tag">Michelin Bib Gourmand 2023–2025</span></div></div>
+    <span class="entry-toggle">▾</span>
+  </div>
+  <div class="entry-body">
+    <p>Modern Indochine style in a two-storey house. Northern Vietnamese dishes with a refined touch. Known for bun cha and crab spring rolls.</p>
+    <a class="maps-link" href="https://maps.google.com/?q=5B+Tong+Duy+Tan+St+Hoan+Kiem+Hanoi" target="_blank">📍 5B Tong Duy Tan St, Hoan Kiem</a>
+  </div>
+</div>
+<div class="entry">
+  <div class="entry-header" onclick="toggleEntry(this)">
+    <div><div class="entry-title">Gia</div><div class="entry-tags"><span class="entry-tag">One Michelin Star</span></div></div>
+    <span class="entry-toggle">▾</span>
+  </div>
+  <div class="entry-body">
+    <p>Contemporary Vietnamese farm-to-table, seasonal tasting menu, counter seating by open kitchen. Ingredients from their own Phu Tho farm. Opposite the Temple of Literature.</p>
+    <a class="maps-link" href="https://maps.google.com/?q=61+Van+Mieu+St+Dong+Da+Hanoi" target="_blank">📍 61 Van Mieu St, Dong Da</a>
+  </div>
+</div>
+<div class="entry">
+  <div class="entry-header" onclick="toggleEntry(this)">
+    <div><div class="entry-title">Etesia</div><div class="entry-tags"><span class="entry-tag">Michelin Guide 2024</span><span class="entry-tag">18-seater</span></div></div>
+    <span class="entry-toggle">▾</span>
+  </div>
+  <div class="entry-body">
+    <p>18-seater only, open kitchen, rotating menu drawing from different countries each visit. Mediterranean-Asian fusion.</p>
+    <a class="maps-link" href="https://maps.google.com/?q=14B+Lo+Su+St+Hoan+Kiem+Hanoi" target="_blank">📍 14B Lo Su St, Hoan Kiem</a>
+  </div>
+</div>
+<div class="entry">
+  <div class="entry-header" onclick="toggleEntry(this)">
+    <div><div class="entry-title">Vin Hoi</div><div class="entry-tags"><span class="entry-tag">New 2025</span></div></div>
+    <span class="entry-toggle">▾</span>
+  </div>
+  <div class="entry-body">
+    <p>Paris-trained chef Hai's bistro. New in 2025, generating strong local buzz. Natural wine, French-inspired sharing plates.</p>
+    <a class="maps-link" href="https://maps.google.com/?q=38+Hang+Bun+St+Ba+Dinh+Hanoi" target="_blank">📍 38 Hang Bun St, Ba Dinh</a>
+  </div>
+</div>
+<div class="entry">
+  <div class="entry-header" onclick="toggleEntry(this)">
+    <div><div class="entry-title">Kumquat Tree</div><div class="entry-tags"><span class="entry-tag">Speakeasy</span></div></div>
+    <span class="entry-toggle">▾</span>
+  </div>
+  <div class="entry-body">
+    <p>Legendary Hanoi speakeasy, reopened August 2025. Hidden entrance behind a tea shop, intimate, salvaged antique furniture. Look for the red door.</p>
+    <a class="maps-link" href="https://maps.google.com/?q=1+Nguyen+Khac+Can+St+Hoan+Kiem+Hanoi" target="_blank">📍 1 Nguyen Khac Can St, Hoan Kiem</a>
+  </div>
+</div>
+<div class="entry">
+  <div class="entry-header" onclick="toggleEntry(this)">
+    <div><div class="entry-title">Greyhaus</div><div class="entry-tags"><span class="entry-tag">Coffee / Wine Bar</span></div></div>
+    <span class="entry-toggle">▾</span>
+  </div>
+  <div class="entry-body">
+    <p>Specialty coffee by day, natural wine bar by night. Raw timber beams, Bauhaus-inspired red floors, exposed brick. Hidden behind bougainvillea.</p>
+    <a class="maps-link" href="https://maps.google.com/?q=55C+Phan+Chu+Trinh+St+Hoan+Kiem+Hanoi" target="_blank">📍 55C Phan Chu Trinh St, Hoan Kiem</a>
+  </div>
+</div>
+</div>
+
+<div class="section-panel" id="hanoi-hotels">
+<div class="entry open">
+  <div class="entry-header" onclick="toggleEntry(this)">
+    <div><div class="entry-title">iRest Orange Tay Ho Lakeside Apartment</div><div class="entry-tags"><span class="entry-tag">~$30–50/night</span><span class="entry-tag">Tay Ho</span></div></div>
+    <span class="entry-toggle">▾</span>
+  </div>
+  <div class="entry-body">
+    <p>Apartment-style accommodation in the Tay Ho / West Lake district — quieter and more independent than the Old Quarter. Good value for the location.</p>
+    <a class="maps-link" href="https://maps.google.com/?q=Tay+Ho+West+Lake+Hanoi" target="_blank">📍 Tay Ho District</a>
+  </div>
+</div>
+<div class="entry">
+  <div class="entry-header" onclick="toggleEntry(this)">
+    <div><div class="entry-title">Fraser Suites Hanoi</div><div class="entry-tags"><span class="entry-tag">~$80–130/night</span><span class="entry-tag">Tay Ho</span></div></div>
+    <span class="entry-toggle">▾</span>
+  </div>
+  <div class="entry-body">
+    <p>Serviced apartment hotel in the Tay Ho / West Lake district. More upscale option in the same quieter neighbourhood.</p>
+    <a class="maps-link" href="https://maps.google.com/?q=Fraser+Suites+Hanoi+Tay+Ho" target="_blank">📍 Tay Ho District</a>
+  </div>
+</div>
+</div>
+
+<div class="section-panel" id="hanoi-neighbourhoods">
+<div class="entry open">
+  <div class="entry-header" onclick="toggleEntry(this)">
+    <div><div class="entry-title">Tay Ho (West Lake)</div><div class="entry-tags"><span class="entry-tag">Recommended Base</span></div></div>
+    <span class="entry-toggle">▾</span>
+  </div>
+  <div class="entry-body"><p>More parks and greenery, less traffic, artisanal cafes, craft breweries. Quieter nights than the Old Quarter. Home to Tran Quoc Pagoda and Quang Ba Flower Market.</p></div>
+</div>
+<div class="entry">
+  <div class="entry-header" onclick="toggleEntry(this)">
+    <div><div class="entry-title">Old Quarter (Hoan Kiem)</div></div>
+    <span class="entry-toggle">▾</span>
+  </div>
+  <div class="entry-body"><p>36 ancient streets each once devoted to a specific trade. Home to Hoan Kiem Lake, Hoa Lo Prison, and the Water Puppet Theatre. Best for first-timers but crowded — better to visit than stay.</p></div>
+</div>
+<div class="entry">
+  <div class="entry-header" onclick="toggleEntry(this)">
+    <div><div class="entry-title">Ba Dinh</div></div>
+    <span class="entry-toggle">▾</span>
+  </div>
+  <div class="entry-body"><p>Ho Chi Minh Mausoleum, Ho Chi Minh Museum, Quan Thanh Temple. Quiet streets lined with French colonial villas and traditional tea houses.</p></div>
+</div>
+<div class="entry">
+  <div class="entry-header" onclick="toggleEntry(this)">
+    <div><div class="entry-title">Truc Bach</div></div>
+    <span class="entry-toggle">▾</span>
+  </div>
+  <div class="entry-body"><p>Peaceful oasis tucked between West Lake and the Red River. Scenic for a bike ride, with pagodas, noodle shops, and lakeside views.</p></div>
+</div>
+</div>
+</div><!-- panel-hanoi -->
+
+<!-- ═══════════════════ PÙ LUÔNG PANEL ═══════════════════ -->
+<div class="destination-panel" id="panel-puluong">
+<div class="dest-header">
+  <h2>Pù Luông</h2>
+  <div class="dest-meta"><span>Mar 1–5</span><span>165 km from Hanoi · ~3.5 hrs</span><span>Village-to-village trek</span><span>Cash only — bring from Hanoi</span></div>
+</div>
+
+<div class="section-panel active" id="puluong-about">
+<div class="pull-quote">February is dry season — ideal conditions for trekking. Mist in the mornings lifts to clear skies by mid-morning.</div>
+<p>Pù Luông Nature Reserve is the recommended trekking destination near Hanoi — flat valley paths, Black Thai and Muong villages, quiet, with extras including bamboo rafting and waterwheels. The format is village-to-village: foot trails only, no motorbike-shared routes, with homestay accommodation connecting the communities.</p>
+<br>
+<p>Your criteria: 2–3 days, village-to-village, flat terrain, foot trails only. Pù Luông fits all of them — quieter and less crowded than Sapa, and directly relevant given the ethnic minority context you'll encounter.</p>
+</div>
+
+<div class="section-panel" id="puluong-health">
+<div class="entry open">
+  <div class="entry-header" onclick="toggleEntry(this)">
+    <div><div class="entry-title">Leeches</div></div>
+    <span class="entry-toggle">▾</span>
+  </div>
+  <div class="entry-body">
+    <p>The most likely nuisance. Harmless but startling. Peak season is the rainy months (May–October); February is significantly better. Humid, shaded jungle sections can stay wet year-round. Tuck pants into socks. Standard insect repellent doesn't reliably deter leeches — salt works better. Check yourself after every forest section.</p>
+  </div>
+</div>
+<div class="entry">
+  <div class="entry-header" onclick="toggleEntry(this)">
+    <div><div class="entry-title">Mosquitoes &amp; Dengue</div></div>
+    <span class="entry-toggle">▾</span>
+  </div>
+  <div class="entry-body">
+    <p>Mosquitoes are present year-round but reduced in the dry season. Dengue is the main day-to-day risk — spread by Aedes mosquitoes that bite during daylight hours, especially dawn and late afternoon. No treatment exists, so prevention matters: 20%+ DEET repellent, long sleeves and pants, and a bed net if sleeping somewhere without screens. Japanese Encephalitis (JE) vaccination is worth discussing with a travel medicine clinic before departure.</p>
+  </div>
+</div>
+<div class="entry">
+  <div class="entry-header" onclick="toggleEntry(this)">
+    <div><div class="entry-title">Ticks, Snakes &amp; Rabies</div></div>
+    <span class="entry-toggle">▾</span>
+  </div>
+  <div class="entry-body">
+    <p>Ticks are present in jungle undergrowth — do a full body check after any off-trail walking. Snakes are a low-probability but real hazard in forested areas; stick to trails, don't reach into undergrowth, watch where you step. Rabies is present in Vietnam — don't pet stray dogs or feed monkeys near temples.</p>
+  </div>
+</div>
+</div>
+
+<div class="section-panel" id="puluong-eat">
+<div class="entry open">
+  <div class="entry-header" onclick="toggleEntry(this)">
+    <div><div class="entry-title">Homestay meals</div></div>
+    <span class="entry-toggle">▾</span>
+  </div>
+  <div class="entry-body"><p>Food is set by your hosts — no menus, no decisions. Expect river fish, free-range chicken, foraged greens, and rice at every meal. Simple, fresh, and genuinely excellent.</p></div>
+</div>
+<div class="entry">
+  <div class="entry-header" onclick="toggleEntry(this)">
+    <div><div class="entry-title">Cơm lam (bamboo tube rice)</div><div class="entry-tags"><span class="entry-tag">Black Thai &amp; Muong speciality</span></div></div>
+    <span class="entry-toggle">▾</span>
+  </div>
+  <div class="entry-body"><p>Rice cooked inside a bamboo stalk over an open fire — smoky, fragrant, slightly sticky. Eaten by peeling back the bamboo. One of the most distinctive food experiences on the entire trip.</p></div>
+</div>
+<div class="entry">
+  <div class="entry-header" onclick="toggleEntry(this)">
+    <div><div class="entry-title">Rượu cần (communal rice wine)</div></div>
+    <span class="entry-toggle">▾</span>
+  </div>
+  <div class="entry-body"><p>Communal rice wine drunk through long reed straws from a clay jar — a traditional part of village hospitality. You'll almost certainly be offered some.</p></div>
+</div>
+<div class="entry">
+  <div class="entry-header" onclick="toggleEntry(this)">
+    <div><div class="entry-title">Foraged vegetables and herbs</div></div>
+    <span class="entry-toggle">▾</span>
+  </div>
+  <div class="entry-body"><p>Dishes will include whatever is growing locally — bamboo shoots, banana blossom, wild greens. This is the most authentic food on the trip.</p></div>
+</div>
+</div>
+
+<div class="section-panel" id="puluong-sites">
+<p style="color:var(--muted);font-style:italic;">To be researched — sites, guided operator details, and specific route information.</p>
+</div>
+</div><!-- panel-puluong -->
+
+<!-- ═══════════════════ SINGAPORE PANEL ═══════════════════ -->
+<div class="destination-panel" id="panel-singapore">
+<div class="dest-header">
+  <h2>Singapore</h2>
+  <div class="dest-meta"><span>Mar 6–9</span><span>SGD · 1 CAD ≈ S$0.93</span><span>Airport: SIN (Changi)</span><span>Base: Tiong Bahru</span></div>
+</div>
+
+<div class="section-panel active" id="singapore-about">
+<p>Singapore is a city-state of around 6 million people packed into just 718 km² at the southern tip of the Malay Peninsula. A British colony until 1965, it became one of Asia's wealthiest cities through sheer economic transformation. For travellers, it's an easy, frictionless city — English everywhere, excellent public transit, exceptional food at every price point, and a natural bookend to a Southeast Asia trip before flying home.</p>
+<br>
+<p><strong>Weather:</strong> 25–32°C · Humid year-round · Short, frequent rain. Identical packing to HCMC — lightweight breathables, compact umbrella or packable rain jacket. A light layer for aggressive air conditioning indoors.</p>
+<br>
+<p><strong>Getting Around:</strong> MRT — Clean, fast, cheap, and covers virtually everywhere you'll want to go. Get a stored-value card (EZ-Link or Singapore Tourist Pass) at the airport. Changi is directly on the MRT (East-West line) — ~30 min to the city centre. Grab is also widely available.</p>
+<br>
+<p><strong>Washrooms:</strong> A non-issue. Clean, well-maintained washrooms throughout MRT stations, hawker centres, malls, and parks. No small change needed, rarely a fee. Toilet paper is standard.</p>
+</div>
+
+<div class="section-panel" id="singapore-events">
+<div class="entry open">
+  <div class="entry-header" onclick="toggleEntry(this)">
+    <div><div class="entry-title">Hari Raya Puasa (Eid al-Fitr)</div><div class="entry-tags"><span class="entry-tag">~Mar 10, 2027</span></div></div>
+    <span class="entry-toggle">▾</span>
+  </div>
+  <div class="entry-body">
+    <p>Marks the end of Ramadan. Kampong Glam neighbourhood (Arab Street area) comes alive with lights, food stalls, and celebrations. Great time to visit that part of the city — just as you're arriving.</p>
+  </div>
+</div>
+<div class="entry">
+  <div class="entry-header" onclick="toggleEntry(this)">
+    <div><div class="entry-title">Chinese New Year lingering atmosphere</div></div>
+    <span class="entry-toggle">▾</span>
+  </div>
+  <div class="entry-body">
+    <p>Main event (Feb 6–7) is before your arrival, but Chinatown decorations, street markets, and festive atmosphere linger well into March. Worth a wander through Chinatown.</p>
+  </div>
+</div>
+</div>
+
+<div class="section-panel" id="singapore-sites">
+<div class="entry open">
+  <div class="entry-header" onclick="toggleEntry(this)">
+    <div><div class="entry-title">National Gallery Singapore</div><div class="entry-tags"><span class="entry-tag">Architecture</span></div></div>
+    <span class="entry-toggle">▾</span>
+  </div>
+  <div class="entry-body">
+    <p>Two restored national monuments — the former Supreme Court and City Hall — joined by a contemporary canopy into a single museum housing the world's largest collection of Southeast Asian modern art. Admission charged for main galleries; some areas free.</p>
+    <a class="maps-link" href="https://maps.google.com/?q=St+Andrew's+Rd+Singapore+City+Hall+MRT" target="_blank">📍 St Andrew's Rd · MRT: City Hall</a>
+  </div>
+</div>
+<div class="entry">
+  <div class="entry-header" onclick="toggleEntry(this)">
+    <div><div class="entry-title">Jewel Changi Airport</div><div class="entry-tags"><span class="entry-tag">Architecture</span><span class="entry-tag">Free entry</span></div></div>
+    <span class="entry-toggle">▾</span>
+  </div>
+  <div class="entry-body">
+    <p>Worth visiting even without a flight. The Rain Vortex is the world's tallest indoor waterfall (40 metres), tumbling through seven levels of terraced lush forest inside a toroidal glass-and-steel dome. Free entry to public areas.</p>
+    <a class="maps-link" href="https://maps.google.com/?q=78+Airport+Blvd+Jewel+Changi+Singapore" target="_blank">📍 78 Airport Blvd · MRT: Changi Airport</a>
+  </div>
+</div>
+<div class="entry">
+  <div class="entry-header" onclick="toggleEntry(this)">
+    <div><div class="entry-title">Gardens by the Bay</div><div class="entry-tags"><span class="entry-tag">Architecture</span></div></div>
+    <span class="entry-toggle">▾</span>
+  </div>
+  <div class="entry-body">
+    <p>101 hectares on reclaimed land, designed by Wilkinson Eyre. The Supertree Grove consists of 18 vertical gardens 25–50 metres tall. The Flower Dome is the world's largest glass greenhouse; the Cloud Forest houses a 35-metre indoor mountain with a waterfall. Supertree Grove and OCBC Skyway are free; conservatories charge entry.</p>
+    <a class="maps-link" href="https://maps.google.com/?q=18+Marina+Gardens+Drive+Singapore" target="_blank">📍 18 Marina Gardens Drive · MRT: Gardens by the Bay</a>
+  </div>
+</div>
+<div class="entry">
+  <div class="entry-header" onclick="toggleEntry(this)">
+    <div><div class="entry-title">Tiong Bahru — Streamline Moderne housing estate</div><div class="entry-tags"><span class="entry-tag">Architecture</span><span class="entry-tag">Your Base</span></div></div>
+    <span class="entry-toggle">▾</span>
+  </div>
+  <div class="entry-body">
+    <p>Singapore's first public housing estate, built in the 1930s by architect Alfred G. Church in Streamline Moderne (late Art Deco): curved facades, rounded corners, porthole windows, stainless steel railings. Twenty original blocks granted conservation status in 2003. Prototype for the HDB system that now houses over 80% of Singapore's population.</p>
+    <a class="maps-link" href="https://maps.google.com/?q=Tiong+Bahru+Singapore" target="_blank">📍 Bukit Merah · MRT: Tiong Bahru</a>
+  </div>
+</div>
+<div class="entry">
+  <div class="entry-header" onclick="toggleEntry(this)">
+    <div><div class="entry-title">National Library Building</div><div class="entry-tags"><span class="entry-tag">Architecture</span><span class="entry-tag">Free entry</span></div></div>
+    <span class="entry-toggle">▾</span>
+  </div>
+  <div class="entry-body">
+    <p>Designed by T.R. Hamzah & Ken Yeang — two 16-storey blocks linked by skybridges on every floor, wrapped in a bioclimatic skin of sun-shading fins. Won the Green Mark Platinum Award. The Lee Kong Chian Reference Library (levels 7–13) houses over 15,000 rare items. Visitors can browse freely without a library card.</p>
+    <a class="maps-link" href="https://maps.google.com/?q=100+Victoria+St+Bugis+Singapore" target="_blank">📍 100 Victoria St, Bugis · Free entry</a>
+  </div>
+</div>
+<div class="entry">
+  <div class="entry-header" onclick="toggleEntry(this)">
+    <div><div class="entry-title">Kampong Glam / Bussorah Street</div><div class="entry-tags"><span class="entry-tag">Architecture</span></div></div>
+    <span class="entry-toggle">▾</span>
+  </div>
+  <div class="entry-body">
+    <p>Conservation area designated 1989, preserving two- and three-storey shophouses (1840–1900) with high ceilings, airwells, overlapping roof tiles. Bussorah Street is the pedestrianized axis leading directly to Sultan Mosque. Best photographed early morning before crowds arrive.</p>
+    <a class="maps-link" href="https://maps.google.com/?q=Bussorah+Street+Kampong+Glam+Singapore" target="_blank">📍 Arab Street area · MRT: Bugis</a>
+  </div>
+</div>
+</div>
+
+<div class="section-panel" id="singapore-eat">
+<div class="entry open">
+  <div class="entry-header" onclick="toggleEntry(this)">
+    <div><div class="entry-title">Durian</div><div class="entry-tags"><span class="entry-tag">Best stop on the trip</span></div></div>
+    <span class="entry-toggle">▾</span>
+  </div>
+  <div class="entry-body">
+    <p>Best durian stop on the Feb–Mar itinerary. Singapore has a secondary season from December–February supplied by Malaysia's Johor region. Varieties: Mao Shan Wang / Musang King (most prized), D24 (milder), Red Prawn (sweetest), Black Thorn (premium). Ask for free samples before buying. Note: banned on the MRT and in most hotel rooms — eat at the stall.</p>
+    <span class="badge">⚠ Banned on MRT and in most hotel rooms — eat at the stall</span>
+    <a class="maps-link" href="https://maps.google.com/?q=Geylang+Rd+Singapore+durian" target="_blank">📍 Geylang Rd (durian strip)</a>
+  </div>
+</div>
+<div class="entry">
+  <div class="entry-header" onclick="toggleEntry(this)">
+    <div><div class="entry-title">Kopi — traditional kopitiam coffee</div><div class="entry-tags"><span class="entry-tag">Coffee</span><span class="entry-tag">Distinctly Singaporean</span></div></div>
+    <span class="entry-toggle">▾</span>
+  </div>
+  <div class="entry-body">
+    <p>A distinct local coffee culture entirely separate from the specialty scene. Robusta beans roasted with butter and sugar, brewed strong and served at old-school kopitiams. Sweet, thick, slightly caramelised — nothing like Vietnamese or Western coffee. Order guide: Kopi (black + sugar), Kopi O (black, no milk), Kopi C (with evaporated milk + sugar), Kopi siu dai (less sweet).</p>
+    <p>Best spots: <strong>Tiong Bahru Market</strong> upstairs kopitiam · <strong>Ya Kun Kaya Toast</strong> (18 China St) · <strong>Killiney Kopitiam</strong> (67 Killiney Rd, est. 1919)</p>
+  </div>
+</div>
+<div class="entry">
+  <div class="entry-header" onclick="toggleEntry(this)">
+    <div><div class="entry-title">Fossa Chocolate</div><div class="entry-tags"><span class="entry-tag">Chocolate</span></div></div>
+    <span class="entry-toggle">▾</span>
+  </div>
+  <div class="entry-body">
+    <p>Award-winning local brand, handcrafted in small batches, additive-free. Known for inventive flavours (Lychee Rose, Matcha Yuzu) and Singapore-themed gift sets (Chrysanthemum, Nanyang Kopi, Pineapple Tart). Available in specialty shops across the city.</p>
+  </div>
+</div>
+<div class="entry">
+  <div class="entry-header" onclick="toggleEntry(this)">
+    <div><div class="entry-title">Gelato Messina</div><div class="entry-tags"><span class="entry-tag">Ice Cream</span></div></div>
+    <span class="entry-toggle">▾</span>
+  </div>
+  <div class="entry-body">
+    <p>Australia's cult-favourite gelato chain's first SE Asian outlet. Makes everything from scratch. 40 flavours plus 5 weekly specials. Singapore-exclusives: Kaya Toast, Teh Tarik, Tau Huay.</p>
+    <a class="maps-link" href="https://maps.google.com/?q=Gelato+Messina+Club+Street+Singapore" target="_blank">📍 Club Street, Chinatown area</a>
+  </div>
+</div>
+<div class="entry">
+  <div class="entry-header" onclick="toggleEntry(this)">
+    <div><div class="entry-title">Tiong Bahru Bakery</div><div class="entry-tags"><span class="entry-tag">Bakery</span></div></div>
+    <span class="entry-toggle">▾</span>
+  </div>
+  <div class="entry-body">
+    <p>Most established French bakery in Singapore. Almond croissant consistently praised. Also known for the chocolate almond croissant and the kouign-amann. The original location pairs naturally with the Tiong Bahru Market visit — kopi upstairs, croissant next door.</p>
+    <a class="maps-link" href="https://maps.google.com/?q=56+Eng+Hoon+St+Tiong+Bahru+Singapore" target="_blank">📍 56 Eng Hoon St, #01-70, Tiong Bahru · Also at Raffles City</a>
+  </div>
+</div>
+<div class="entry">
+  <div class="entry-header" onclick="toggleEntry(this)">
+    <div><div class="entry-title">Kaya jam</div></div>
+    <span class="entry-toggle">▾</span>
+  </div>
+  <div class="entry-body"><p>Singapore's iconic coconut-pandan breakfast spread. Ya Kun and Killiney Kopitiam have traveller-friendly packaging — a good lightweight edible souvenir.</p></div>
+</div>
+<div class="entry">
+  <div class="entry-header" onclick="toggleEntry(this)">
+    <div><div class="entry-title">Sia Huat</div><div class="entry-tags"><span class="entry-tag">Store</span></div></div>
+    <span class="entry-toggle">▾</span>
+  </div>
+  <div class="entry-body">
+    <p>Singapore's definitive Asian kitchen supply store: bamboo steamers, Chinese cleavers, carbon steel woks, clay pots, and professional cookware at wholesale prices. Used by hawker stall operators across the city.</p>
+    <a class="maps-link" href="https://maps.google.com/?q=7+Temple+St+Chinatown+Singapore" target="_blank">📍 7–9 Temple St, Chinatown · MRT: Chinatown</a>
+  </div>
+</div>
+<div class="entry">
+  <div class="entry-header" onclick="toggleEntry(this)">
+    <div><div class="entry-title">Cat Socrates</div><div class="entry-tags"><span class="entry-tag">Store</span></div></div>
+    <span class="entry-toggle">▾</span>
+  </div>
+  <div class="entry-body">
+    <p>A Singapore institution since 2008: part gift store, part homeware shop with a distinctly local slant. Singlish greeting cards, Peranakan tile coasters, and local artist collaborations. One of the best places to find a souvenir that doesn't feel like one.</p>
+    <span class="badge">Tiong Bahru &amp; Joo Chiat branches</span>
+  </div>
+</div>
+<div class="entry">
+  <div class="entry-header" onclick="toggleEntry(this)">
+    <div><div class="entry-title">Kok Fah Technology Weekend Farm</div><div class="entry-tags"><span class="entry-tag">Market · Open Mar 7 ✓</span></div></div>
+    <span class="entry-toggle">▾</span>
+  </div>
+  <div class="entry-body">
+    <p>A genuine working farm open every weekend (9am–5pm) selling vegetables harvested the same day, plus potted herbs and spices. Open Saturday Mar 7, your last day.</p>
+    <a class="maps-link" href="https://maps.google.com/?q=Lim+Chu+Kang+Farm+Singapore" target="_blank">📍 Lim Chu Kang area (Grab recommended)</a>
+  </div>
+</div>
+</div>
+
+<div class="section-panel" id="singapore-markets">
+<div class="entry open">
+  <div class="entry-header" onclick="toggleEntry(this)">
+    <div><div class="entry-title">Tiong Bahru Market</div><div class="entry-tags"><span class="entry-tag">Best Hawker Centre</span><span class="entry-tag">Your Neighbourhood</span></div></div>
+    <span class="entry-toggle">▾</span>
+  </div>
+  <div class="entry-body">
+    <p>The best hawker centre in Singapore for a proper local breakfast or lunch — upstairs kopitiam serves traditional kopi; ground floor stalls cover char kway teow, chee cheong fun, roast meats, and chicken rice. The surrounding 1930s Art Deco neighbourhood is the most characterful in the city.</p>
+    <a class="maps-link" href="https://maps.google.com/?q=30+Seng+Poh+Rd+Tiong+Bahru+Singapore" target="_blank">📍 30 Seng Poh Rd · MRT: Tiong Bahru</a>
+  </div>
+</div>
+<div class="entry">
+  <div class="entry-header" onclick="toggleEntry(this)">
+    <div><div class="entry-title">Maxwell Food Centre</div></div>
+    <span class="entry-toggle">▾</span>
+  </div>
+  <div class="entry-body">
+    <p>Chinatown's most famous hawker centre, anchored by Tian Tian Chicken Rice.</p>
+    <a class="maps-link" href="https://maps.google.com/?q=1+Kadayanallur+St+Maxwell+Singapore" target="_blank">📍 1 Kadayanallur St · MRT: Chinatown</a>
+  </div>
+</div>
+<div class="entry">
+  <div class="entry-header" onclick="toggleEntry(this)">
+    <div><div class="entry-title">Old Airport Road Food Centre</div></div>
+    <span class="entry-toggle">▾</span>
+  </div>
+  <div class="entry-body">
+    <p>Larger and more authentic, 168 stalls, many heritage vendors. Worth the slight detour. Beloved by locals over tourists.</p>
+    <a class="maps-link" href="https://maps.google.com/?q=51+Old+Airport+Road+Singapore" target="_blank">📍 51 Old Airport Road</a>
+  </div>
+</div>
+<div class="entry">
+  <div class="entry-header" onclick="toggleEntry(this)">
+    <div><div class="entry-title">Lau Pa Sat</div></div>
+    <span class="entry-toggle">▾</span>
+  </div>
+  <div class="entry-body">
+    <p>Historic Victorian cast-iron market in the CBD. More touristy than the others but hard to beat for atmosphere at night. Satay Street outside opens at 7pm with open-air grills.</p>
+    <a class="maps-link" href="https://maps.google.com/?q=18+Raffles+Quay+Singapore" target="_blank">📍 18 Raffles Quay</a>
+  </div>
+</div>
+</div>
+
+<div class="section-panel" id="singapore-restaurants">
+<div class="entry open">
+  <div class="entry-header" onclick="toggleEntry(this)">
+    <div><div class="entry-title">Labyrinth ⭐</div><div class="entry-tags"><span class="entry-tag">One Michelin Star</span><span class="entry-tag">Asia's 50 Best #40</span></div></div>
+    <span class="entry-toggle">▾</span>
+  </div>
+  <div class="entry-body">
+    <p>Chef LG Han's "New Singaporean" tasting menu inside Esplanade Mall. Reimagines hawker and heritage dishes with modern techniques — chilli crab pie, chicken rice donabe, bak kut teh reinterpreted. Consistently awarded since 2017. Lunch S$208++, dinner S$298++. Book well ahead.</p>
+    <a class="maps-link" href="https://maps.google.com/?q=Esplanade+Mall+8+Raffles+Avenue+Singapore" target="_blank">📍 Esplanade Mall, 8 Raffles Ave, #02-23</a>
+  </div>
+</div>
+<div class="entry">
+  <div class="entry-header" onclick="toggleEntry(this)">
+    <div><div class="entry-title">East Coast Seafood Centre — Chili Crab</div></div>
+    <span class="entry-toggle">▾</span>
+  </div>
+  <div class="entry-body">
+    <p>Open-air waterfront restaurants in East Coast Park. Singapore's classic chili crab experience. Top spots: Long Beach Seafood, No Signboard Seafood, Palm Beach Seafood.</p>
+    <a class="maps-link" href="https://maps.google.com/?q=1220+East+Coast+Parkway+Singapore" target="_blank">📍 1220 East Coast Parkway</a>
+  </div>
+</div>
+</div>
+
+<div class="section-panel" id="singapore-neighbourhoods">
+<div class="entry open">
+  <div class="entry-header" onclick="toggleEntry(this)">
+    <div><div class="entry-title">Tiong Bahru</div><div class="entry-tags"><span class="entry-tag">Your Base</span></div></div>
+    <span class="entry-toggle">▾</span>
+  </div>
+  <div class="entry-body"><p>Singapore's most characterful neighbourhood. 1930s Art Deco curved facades, indie cafes and bookshops alongside longstanding provision shops. Tiong Bahru Market hawker centre is reason enough to visit. Few tourists.</p></div>
+</div>
+<div class="entry">
+  <div class="entry-header" onclick="toggleEntry(this)">
+    <div><div class="entry-title">Marina Bay</div></div>
+    <span class="entry-toggle">▾</span>
+  </div>
+  <div class="entry-body"><p>Skyscrapers, river views, promenade alive at night with light shows. Marina Bay Sands, ArtScience Museum, Gardens by the Bay, National Gallery.</p></div>
+</div>
+<div class="entry">
+  <div class="entry-header" onclick="toggleEntry(this)">
+    <div><div class="entry-title">Chinatown</div></div>
+    <span class="entry-toggle">▾</span>
+  </div>
+  <div class="entry-body"><p>Maxwell Food Centre, Buddha Tooth Relic Temple, Sri Mariamman Temple. Kitchen stores and wine bars come alive at night.</p></div>
+</div>
+<div class="entry">
+  <div class="entry-header" onclick="toggleEntry(this)">
+    <div><div class="entry-title">Kampong Glam</div></div>
+    <span class="entry-toggle">▾</span>
+  </div>
+  <div class="entry-body"><p>Sultan Mosque, Middle Eastern restaurants, batik shops, younger nightlife scene. Best for Hari Raya atmosphere in early March.</p></div>
+</div>
+<div class="entry">
+  <div class="entry-header" onclick="toggleEntry(this)">
+    <div><div class="entry-title">Katong / Joo Chiat</div></div>
+    <span class="entry-toggle">▾</span>
+  </div>
+  <div class="entry-body"><p>Colourful preserved shophouses, traditional eateries. Off the tourist trail — worth it if time allows.</p></div>
+</div>
+</div>
+</div><!-- panel-singapore -->
+
+</div><!-- #content -->
+<script>
+// ── DESTINATION DATA: tabs per panel ──
+const DEST_TABS = {
+  home: [],
+  pretrip: ['Visas & Entry','Apps','Money','Bookings','Health & Safety','Documents','Vietnamese Phrases'],
+  taipei: ['About','Events','Sites','What to Eat','Restaurants','Neighbourhoods'],
+  hcmc: ['About','Events','Sites','What to Eat','Restaurants','Hotels','Neighbourhoods'],
+  mekong: ['About','Lunch on the Road','Sites','What to Eat','Restaurants'],
+  hanoi: ['About','Events','Sites','What to Eat','Restaurants','Hotels','Neighbourhoods'],
+  puluong: ['About','Health Notes','What to Eat','Sites'],
+  singapore: ['About','Events','Sites','What to Eat','Markets','Restaurants','Neighbourhoods']
+};
+
+const TAB_IDS = {
+  home: [],
+  pretrip: ['pretrip-visas','pretrip-apps','pretrip-money','pretrip-bookings','pretrip-health','pretrip-documents','pretrip-phrases'],
+  taipei: ['taipei-about','taipei-events','taipei-sites','taipei-eat','taipei-restaurants','taipei-neighbourhoods'],
+  hcmc: ['hcmc-about','hcmc-events','hcmc-sites','hcmc-eat','hcmc-restaurants','hcmc-hotels','hcmc-neighbourhoods'],
+  mekong: ['mekong-about','mekong-lunch','mekong-sites','mekong-eat','mekong-restaurants'],
+  hanoi: ['hanoi-about','hanoi-events','hanoi-sites','hanoi-eat','hanoi-restaurants','hanoi-hotels','hanoi-neighbourhoods'],
+  puluong: ['puluong-about','puluong-health','puluong-eat','puluong-sites'],
+  singapore: ['singapore-about','singapore-events','singapore-sites','singapore-eat','singapore-markets','singapore-restaurants','singapore-neighbourhoods']
+};
+
+let currentDest = 'home';
+let currentTabIndex = 0;
+
+function showDest(dest, btn) {
+  // hide all panels
+  document.querySelectorAll('.destination-panel').forEach(p => p.classList.remove('active'));
+  document.querySelectorAll('.dest-btn').forEach(b => b.classList.remove('active'));
+  
+  document.getElementById('panel-' + dest).classList.add('active');
+  if (btn) btn.classList.add('active');
+  else {
+    const b = document.querySelector('[data-dest=' + dest + ']');
+    if (b) b.classList.add('active');
+  }
+  
+  currentDest = dest;
+  currentTabIndex = 0;
+  renderTabs(dest);
+  showTab(dest, 0);
+  window.scrollTo(0, 0);
+}
+
+function renderTabs(dest) {
+  const tabs = DEST_TABS[dest] || [];
+  const bar = document.getElementById('section-tabs');
+  bar.innerHTML = '';
+  tabs.forEach((label, i) => {
+    const btn = document.createElement('button');
+    btn.className = 'sec-btn' + (i === 0 ? ' active' : '');
+    btn.textContent = label;
+    btn.onclick = () => showTab(dest, i);
+    bar.appendChild(btn);
+  });
+}
+
+function showTab(dest, idx) {
+  const ids = TAB_IDS[dest] || [];
+  ids.forEach(id => {
+    const el = document.getElementById(id);
+    if (el) el.classList.remove('active');
+  });
+  if (ids[idx]) {
+    const el = document.getElementById(ids[idx]);
+    if (el) el.classList.add('active');
+  }
+  document.querySelectorAll('#section-tabs .sec-btn').forEach((b, i) => {
+    b.classList.toggle('active', i === idx);
+  });
+  currentTabIndex = idx;
+}
+
+function toggleEntry(header) {
+  const entry = header.closest('.entry');
+  entry.classList.toggle('open');
+}
+
+// ── SEARCH ──
+function handleSearch(val) {
+  const btn = document.getElementById('clear-search');
+  btn.classList.toggle('visible', val.length > 0);
+  
+  if (!val.trim()) {
+    clearSearch();
+    return;
+  }
+  
+  const q = val.toLowerCase();
+  // show all panels for search
+  document.querySelectorAll('.destination-panel').forEach(p => p.classList.add('active'));
+  document.querySelectorAll('.section-panel').forEach(p => p.classList.add('active'));
+  document.getElementById('section-tabs').innerHTML = '';
+  
+  let hasAny = false;
+  document.querySelectorAll('.entry').forEach(entry => {
+    const text = entry.textContent.toLowerCase();
+    if (text.includes(q)) {
+      entry.classList.remove('search-hidden');
+      entry.classList.add('open');
+      hasAny = true;
+    } else {
+      entry.classList.add('search-hidden');
+    }
+  });
+  
+  document.querySelectorAll('.destination-panel').forEach(panel => {
+    const visible = panel.querySelectorAll('.entry:not(.search-hidden)').length;
+    panel.style.display = visible > 0 ? '' : 'none';
+  });
+  
+  document.getElementById('no-results').style.display = hasAny ? 'none' : 'block';
+}
+
+function clearSearch() {
+  document.getElementById('search-input').value = '';
+  document.getElementById('clear-search').classList.remove('visible');
+  document.getElementById('no-results').style.display = 'none';
+  
+  document.querySelectorAll('.entry').forEach(e => {
+    e.classList.remove('search-hidden');
+    // don't auto-close all entries
+  });
+  document.querySelectorAll('.destination-panel').forEach(p => {
+    p.style.display = '';
+    p.classList.remove('active');
+  });
+  
+  showDest(currentDest);
+}
+
+// init
+document.addEventListener('DOMContentLoaded', () => {
+  showDest('home');
+});
+</script>
+</body>
+</html>
